@@ -108,7 +108,7 @@
 <body>
 
     <header>
-        <div class="logo">Luxe</div>
+        <div class="logo">LUXORA</div>
         <div class="cart-icon" onclick="toggleCart()">
             🛒 <span id="cart-count">0</span>
         </div>
@@ -193,7 +193,7 @@
             currentProductId = id;
             
             document.getElementById('modal-title').innerText = p.name;
-            document.getElementById('modal-price').innerText = p.price + " ر.س";
+            document.getElementById('modal-price').innerText = p.price + " درهم";
             document.getElementById('modal-description').innerText = p.description;
             document.getElementById('modal-image').src = p.img;
             
@@ -255,13 +255,13 @@
                     <div class="cart-item">
                         <div>
                             <strong>${item.name}</strong><br>
-                            <small>${item.qty} × ${item.price} ر.س</small>
+                            <small>${item.qty} × ${item.price} درهم</small>
                         </div>
                         <button onclick="removeFromCart(${item.cartId})" style="border:none; color:red; background:none; cursor:pointer;">حذف</button>
                     </div>
                 `;
             }).join('');
-            document.getElementById('cart-total').innerText = "الإجمالي: " + total + " ر.س";
+            document.getElementById('cart-total').innerText = "الإجمالي: " + total + " درهم";
         }
 
         function sendWhatsApp() {
