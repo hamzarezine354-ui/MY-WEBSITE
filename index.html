@@ -182,7 +182,7 @@
                 <div class="product-card" onclick="openModal(${p.id})">
                     <img src="${p.img}">
                     <h3>${p.name}</h3>
-                    <div style="color:var(--primary); font-weight:bold;">${p.price} ر.س</div>
+                    <div style="color:var(--primary); font-weight:bold;">${p.price} درهم</div>
                     <span class="stock-tag ${p.stock <= 0 ? 'out-of-stock' : ''}">${p.stock > 0 ? `المتبقي: ${p.stock}` : 'نفدت الكمية'}</span>
                 </div>
             `).join('');
