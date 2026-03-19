@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LUXORA | متجر الإكسسوارات الفاخرة</title>
+    <title>LUXE | متجر الإكسسوارات الفاخرة</title>
     <style>
         :root {
             --primary: #b8860b;
@@ -108,7 +108,7 @@
 <body>
 
     <header>
-        <div class="logo">LUXORA</div>
+        <div class="logo">Luxe</div>
         <div class="cart-icon" onclick="toggleCart()">
             🛒 <span id="cart-count">0</span>
         </div>
@@ -146,33 +146,26 @@
     </div>
 
     <script>
-        /**
-         * 1. نظام تحديث النسخة
-         * عند تعديل الـ stock يدوياً في قائمة المنتجات بالأسفل، 
-         * قم بتغيير رقم النسخة هنا (مثلاً من v1.0 إلى v1.1) لكي يتحدث عند الجميع.
-         **/
-        const STORE_VERSION = "v1.0"; 
+        // 1. نظام النسخة (غيره عند كل تعديل يدوي للكميات مثل v1.1, v1.2...)
+        const STORE_VERSION = "v1.1"; 
 
-        // 2. قائمة المنتجات الأصلية (عدل الكميات هنا)
+        // 2. قائمة المنتجات (الكميات هنا ثابتة ولن تنقص تلقائياً)
         const defaultProducts = [
             { id: 1, name: "عقد الزمرد الملكي", price: 3400, stock: 1, description: "عقد يدوي الصنع مرصع بأحجار الزمرد.", img: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600" },
             { id: 2, name: "خاتم الألماس الهندسي", price: 1850, stock: 5, description: "تصميم عصري يجمع بين البساطة والفخامة.", img: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=600" },
             { id: 3, name: "سوار الكريستال الناعم", price: 920, stock: 15, description: "سوار رقيق من الفضة الإسترلينية.", img: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=600" }
         ];
 
-        // 3. التحقق من نسخة المتجر لتحديث بيانات الزبائن القدامى
+        // 3. تحديث النسخة عند الزبائن
         if (localStorage.getItem('luxe_version') !== STORE_VERSION) {
             localStorage.setItem('luxe_products', JSON.stringify(defaultProducts));
             localStorage.setItem('luxe_version', STORE_VERSION);
-            // ملاحظة: لا نمسح السلة (luxe_cart) لكي لا نفقد طلبات الزبون الحالية
         }
 
-        // 4. تحميل البيانات
         let products = JSON.parse(localStorage.getItem('luxe_products')) || defaultProducts;
         let cart = JSON.parse(localStorage.getItem('luxe_cart')) || [];
 
         function saveData() {
-            localStorage.setItem('luxe_products', JSON.stringify(products));
             localStorage.setItem('luxe_cart', JSON.stringify(cart));
         }
 
@@ -182,18 +175,17 @@
                 <div class="product-card" onclick="openModal(${p.id})">
                     <img src="${p.img}">
                     <h3>${p.name}</h3>
-                    <div style="color:var(--primary); font-weight:bold;">${p.price} درهم</div>
-                    <span class="stock-tag ${p.stock <= 0 ? 'out-of-stock' : ''}">${p.stock > 0 ? `المتبقي: ${p.stock}` : 'نفدت الكمية'}</span>
+                    <div style="color:var(--primary); font-weight:bold;">${p.price} ر.س</div>
+                    <span class="stock-tag ${p.stock <= 0 ? 'out-of-stock' : ''}">${p.stock > 0 ? `المتوفر: ${p.stock}` : 'نفدت الكمية'}</span>
                 </div>
             `).join('');
         }
 
         function openModal(id) {
             const p = products.find(prod => prod.id === id);
-            currentProductId = id;
             
             document.getElementById('modal-title').innerText = p.name;
-            document.getElementById('modal-price').innerText = p.price + " درهم";
+            document.getElementById('modal-price').innerText = p.price + " ر.س";
             document.getElementById('modal-description').innerText = p.description;
             document.getElementById('modal-image').src = p.img;
             
@@ -207,7 +199,7 @@
                 addBtn.disabled = true;
                 addBtn.innerText = "نفدت الكمية";
             } else {
-                stockText.innerText = `الكمية المتوفرة: ${p.stock}`;
+                stockText.innerText = `الكمية المتاحة: ${p.stock}`;
                 addBtn.disabled = false;
                 addBtn.innerText = "إضافة إلى الحقيبة";
                 qtyInput.max = p.stock;
@@ -217,32 +209,21 @@
             document.getElementById('product-modal').style.display = 'flex';
         }
 
+        // دالة الإضافة (تم إيقاف النقص التلقائي)
         function addToCart(product, qty) {
-            if (qty > product.stock) {
-                alert("الكمية المطلوبة أكبر من المتوفر!");
-                return;
-            }
-            product.stock -= qty;
             const cartId = Date.now();
-            cart.push({ ...product, qty, cartId, originalId: product.id });
+            cart.push({ ...product, qty, cartId });
             saveData();
             updateCartUI();
-            displayProducts();
             closeModal();
             toggleCart();
         }
 
+        // دالة الحذف (تم إيقاف الزيادة التلقائية)
         function removeFromCart(cartId) {
-            const itemIndex = cart.findIndex(i => i.cartId === cartId);
-            if (itemIndex > -1) {
-                const item = cart[itemIndex];
-                const p = products.find(prod => prod.id === item.originalId);
-                if (p) p.stock += item.qty;
-                cart.splice(itemIndex, 1);
-                saveData();
-                updateCartUI();
-                displayProducts();
-            }
+            cart = cart.filter(item => item.cartId !== cartId);
+            saveData();
+            updateCartUI();
         }
 
         function updateCartUI() {
@@ -255,19 +236,19 @@
                     <div class="cart-item">
                         <div>
                             <strong>${item.name}</strong><br>
-                            <small>${item.qty} × ${item.price} درهم</small>
+                            <small>${item.qty} × ${item.price} ر.س</small>
                         </div>
                         <button onclick="removeFromCart(${item.cartId})" style="border:none; color:red; background:none; cursor:pointer;">حذف</button>
                     </div>
                 `;
             }).join('');
-            document.getElementById('cart-total').innerText = "الإجمالي: " + total + " درهم";
+            document.getElementById('cart-total').innerText = "الإجمالي: " + total + " ر.س";
         }
 
         function sendWhatsApp() {
             if (cart.length === 0) return;
             const phone = "212621445495";
-            let msg = "طلب جديد من Luxora:\n";
+            let msg = "طلب جديد من Luxe:\n";
             cart.forEach(i => msg += `- ${i.name} (عدد: ${i.qty})\n`);
             window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
         }
