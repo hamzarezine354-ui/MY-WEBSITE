@@ -9,7 +9,7 @@
             --primary: #b8860b;
             --dark: #1a1a1a;
             --light: #fdfdfd;
-            --glass-bg: rgba(255, 255, 255, 0.82);
+            --glass-bg: rgba(255, 255, 255, 0.85);
             --shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
             --whatsapp: #25D366;
             --danger: #e74c3c;
@@ -21,110 +21,148 @@
             -webkit-tap-highlight-color: transparent;
         }
         
-        body { background: #f8f9fa; color: var(--dark); overflow-x: hidden; transition: 0.3s; }
+        body { background: #f8f9fa; color: var(--dark); overflow-x: hidden; min-height: 100vh; }
 
         header { 
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
-            padding: 12px 5%; 
+            padding: 15px 8%; 
             display: flex; justify-content: space-between; align-items: center; 
             box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
-            position: sticky; top: 0; z-index: 1000; transition: filter 0.3s ease;
+            position: sticky; top: 0; z-index: 1000;
         }
 
-        .logo { font-size: 22px; font-weight: 800; color: var(--primary); letter-spacing: 1px; }
+        .logo { font-size: 26px; font-weight: 800; color: var(--primary); letter-spacing: 1px; }
 
-        .cart-icon { cursor: pointer; position: relative; font-size: 22px; }
+        .cart-icon { cursor: pointer; position: relative; font-size: 26px; }
         #cart-count { 
-            background: var(--dark); color: white; font-size: 10px; width: 18px; height: 18px;
+            background: var(--dark); color: white; font-size: 11px; width: 20px; height: 20px;
             display: flex; align-items: center; justify-content: center; border-radius: 50%; 
-            position: absolute; top: -5px; right: -8px; font-weight: bold;
+            position: absolute; top: -5px; right: -10px; font-weight: bold;
         }
 
+        /* تنسيق الشبكة للمنتجات - متجاوب */
         main { 
-            display: grid; grid-template-columns: repeat(2, 1fr); 
-            gap: 12px; padding: 15px; transition: filter 0.3s ease;
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); /* للهاتف */
+            gap: 15px; padding: 20px; 
+            transition: filter 0.4s ease;
+            max-width: 1400px;
+            margin: 0 auto;
         }
 
-        /* طمس الخلفية عند فتح الحقيبة */
-        body.cart-open main, body.cart-open header { filter: blur(8px); pointer-events: none; }
+        @media (min-width: 768px) {
+            main { grid-template-columns: repeat(3, 1fr); gap: 30px; padding: 40px 8%; }
+        }
+        @media (min-width: 1024px) {
+            main { grid-template-columns: repeat(4, 1fr); }
+        }
+
+        /* طمس الخلفية */
+        body.cart-open main, body.cart-open header { filter: blur(10px); pointer-events: none; }
 
         .product-card { 
-            background: white; padding: 10px; border-radius: 15px; text-align: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            background: white; padding: 15px; border-radius: 20px; text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05); transition: 0.3s; cursor: pointer;
         }
-        .product-card img { width: 100%; height: 160px; object-fit: cover; border-radius: 12px; margin-bottom: 8px; }
-        .product-card h3 { font-size: 0.85rem; margin-bottom: 5px; height: 2.4em; overflow: hidden; }
-        .product-card .price { color: var(--primary); font-weight: bold; font-size: 0.9rem; }
+        .product-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+        .product-card img { width: 100%; height: 200px; object-fit: cover; border-radius: 15px; margin-bottom: 12px; }
+        
+        @media (max-width: 600px) {
+            .product-card { padding: 10px; border-radius: 15px; }
+            .product-card img { height: 160px; border-radius: 12px; }
+        }
 
-        .stock-tag { font-size: 0.7rem; color: var(--danger); font-weight: bold; margin-top: 4px; }
+        .product-card h3 { font-size: 1rem; margin-bottom: 8px; height: 2.4em; overflow: hidden; }
+        .product-card .price { color: var(--primary); font-weight: bold; font-size: 1.1rem; }
 
         /* نافذة المنتج */
         .modal { 
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.6); z-index: 2000; justify-content: center; align-items: flex-end; 
+            background: rgba(0,0,0,0.6); z-index: 2000; justify-content: center; align-items: center; 
+            padding: 20px;
         }
 
         .modal-content { 
-            background: white; width: 100%; max-width: 500px; border-radius: 20px 20px 0 0; 
-            position: relative; animation: slideUp 0.3s ease-out;
+            background: white; width: 100%; max-width: 800px; border-radius: 25px; 
+            display: flex; flex-wrap: wrap; position: relative; overflow: hidden;
+            animation: modalFade 0.3s ease;
         }
+        @keyframes modalFade { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
 
-        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        .modal-img { flex: 1; min-width: 300px; height: 450px; object-fit: cover; }
+        .modal-info { flex: 1; padding: 35px; min-width: 300px; }
 
-        .modal-img { width: 100%; height: 250px; object-fit: cover; }
-        .modal-info { padding: 20px; }
+        @media (max-width: 650px) {
+            .modal { align-items: flex-end; padding: 0; }
+            .modal-content { border-radius: 25px 25px 0 0; }
+            .modal-img { height: 280px; }
+            .modal-info { padding: 25px; }
+        }
 
         .add-btn { 
-            background: var(--dark); color: white; border: none; padding: 14px; border-radius: 12px; 
-            cursor: pointer; width: 100%; font-weight: 600; font-size: 16px; margin-top: 15px;
+            background: var(--dark); color: white; border: none; padding: 16px; border-radius: 12px; 
+            cursor: pointer; width: 100%; font-weight: 600; font-size: 16px; margin-top: 20px;
         }
 
-        /* سلة التسوق العائمة والجميلة */
+        /* سلة التسوق - ذكية للحاسوب والهاتف */
         .sidebar { 
-            position: fixed; top: 50%; left: 50%; 
-            transform: translate(-50%, -50%) scale(0.9);
-            width: 88%; max-width: 340px; 
+            position: fixed; 
             background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.4);
-            border-radius: 25px; padding: 20px; 
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
             box-shadow: var(--shadow);
             z-index: 3000; opacity: 0; visibility: hidden;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            border: 1px solid rgba(255,255,255,0.4);
         }
 
-        .sidebar.active { opacity: 1; visibility: visible; transform: translate(-50%, -50%) scale(1); }
+        /* تصميم الهاتف (عائمة في المنتصف) */
+        @media (max-width: 767px) {
+            .sidebar {
+                top: 50%; left: 50%; 
+                transform: translate(-50%, -50%) scale(0.85);
+                width: 90%; max-width: 340px; 
+                border-radius: 30px; padding: 25px;
+            }
+            .sidebar.active { opacity: 1; visibility: visible; transform: translate(-50%, -50%) scale(1); }
+        }
 
-        .cart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .cart-header h3 { font-size: 1.1rem; color: var(--primary); }
-        .close-cart { font-size: 22px; cursor: pointer; color: #666; }
+        /* تصميم الحاسوب (جانبية أنيقة) */
+        @media (min-width: 768px) {
+            .sidebar {
+                top: 0; left: -420px; 
+                width: 400px; height: 100vh;
+                border-radius: 0; padding: 40px 30px;
+                transform: none;
+            }
+            .sidebar.active { opacity: 1; visibility: visible; left: 0; }
+        }
 
+        .cart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
         .cart-item { 
-            background: rgba(255,255,255,0.4); margin-bottom: 8px; padding: 10px;
-            border-radius: 12px; display: flex; justify-content: space-between; align-items: center;
+            background: rgba(255,255,255,0.5); margin-bottom: 12px; padding: 15px;
+            border-radius: 15px; display: flex; justify-content: space-between; align-items: center;
         }
 
         .whatsapp-btn {
-            background-color: var(--whatsapp); color: white; border: none; padding: 14px;
-            border-radius: 12px; cursor: pointer; width: 100%;
-            font-weight: bold; font-size: 15px; margin-top: 15px;
+            background-color: var(--whatsapp); color: white; border: none; padding: 18px;
+            border-radius: 15px; cursor: pointer; width: 100%;
+            font-weight: bold; font-size: 16px; margin-top: 25px;
         }
 
-        /* إشعار الإضافة */
         #toast {
             position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
-            background: var(--dark); color: white; padding: 12px 25px;
-            border-radius: 50px; font-size: 14px; z-index: 4000;
+            background: var(--dark); color: white; padding: 12px 30px;
+            border-radius: 50px; font-size: 15px; z-index: 4000;
             opacity: 0; transition: 0.5s; pointer-events: none;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
         }
     </style>
 </head>
 <body>
 
-    <header id="header">
+    <header>
         <div class="logo">Luxe</div>
         <div class="cart-icon" onclick="toggleCart()">
             🛒 <span id="cart-count">0</span>
@@ -137,15 +175,15 @@
 
     <div id="product-modal" class="modal" onclick="closeModal()">
         <div class="modal-content" onclick="event.stopPropagation()">
-            <div onclick="closeModal()" style="position: absolute; top: 10px; left: 10px; cursor: pointer; font-size: 18px; background: rgba(0,0,0,0.5); color: white; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border-radius: 50%; z-index: 10;">✕</div>
+            <div onclick="closeModal()" style="position: absolute; top: 15px; left: 15px; cursor: pointer; font-size: 20px; background: rgba(0,0,0,0.5); color: white; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; border-radius: 50%; z-index: 10;">✕</div>
             <img id="modal-image" src="" class="modal-img">
             <div class="modal-info">
-                <h2 id="modal-title" style="font-size: 1.2rem;"></h2>
-                <p id="modal-price" style="color: var(--primary); font-weight: bold; font-size: 1.1rem; margin: 5px 0;"></p>
-                <p id="modal-description" style="color: #666; font-size: 0.85rem; margin-bottom: 15px;"></p>
-                <div style="display: flex; align-items: center; gap: 10px;">
+                <h2 id="modal-title" style="font-size: 1.5rem; margin-bottom: 10px;"></h2>
+                <p id="modal-price" style="color: var(--primary); font-weight: bold; font-size: 1.3rem; margin-bottom: 15px;"></p>
+                <p id="modal-description" style="color: #666; line-height: 1.6; margin-bottom: 25px; font-size: 0.95rem;"></p>
+                <div style="display: flex; align-items: center; gap: 15px;">
                     <label>الكمية:</label>
-                    <input type="number" id="product-qty" value="1" min="1" style="flex: 1; padding: 8px; border-radius: 8px; border: 1px solid #ddd; text-align: center;">
+                    <input type="number" id="product-qty" value="1" min="1" style="width: 80px; padding: 10px; border-radius: 10px; border: 1px solid #ddd; text-align: center;">
                 </div>
                 <button id="modal-add-btn" class="add-btn">إضافة للحقيبة</button>
             </div>
@@ -154,21 +192,21 @@
 
     <div id="cart-sidebar" class="sidebar">
         <div class="cart-header">
-            <h3>حقيبة التسوق</h3>
-            <span class="close-cart" onclick="toggleCart()">✕</span>
+            <h3 style="color: var(--primary);">حقيبة التسوق</h3>
+            <span style="font-size: 28px; cursor: pointer; color: #888;" onclick="toggleCart()">✕</span>
         </div>
-        <div id="cart-items" style="max-height: 35vh; overflow-y: auto;"></div>
-        <div id="cart-total" style="margin-top: 15px; font-weight: bold; font-size: 1rem; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 10px;"></div>
-        <button class="whatsapp-btn" onclick="sendWhatsApp()">اطلب الآن عبر واتساب</button>
+        <div id="cart-items" style="max-height: 60vh; overflow-y: auto;"></div>
+        <div id="cart-total" style="margin-top: 25px; font-weight: bold; font-size: 1.2rem; border-top: 1px solid rgba(0,0,0,0.08); padding-top: 20px; text-align: center;"></div>
+        <button class="whatsapp-btn" onclick="sendWhatsApp()">إرسال الطلب (واتساب)</button>
     </div>
 
     <script>
-        const STORE_VERSION = "v1.6"; 
-
+        const STORE_VERSION = "v1.7"; 
         const defaultProducts = [
-            { id: 1, name: "عقد الزمرد الملكي", price: 3400, stock: 1, description: "عقد يدوي الصنع مرصع بأحجار الزمرد الفاخرة.", img: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600" },
-            { id: 2, name: "خاتم الألماس الهندسي", price: 1850, stock: 5, description: "تصميم عصري يجمع بين البساطة والفخامة القصوى.", img: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=600" },
-            { id: 3, name: "سوار الكريستال الناعم", price: 920, stock: 15, description: "سوار رقيق من الفضة الإسترلينية المرصعة.", img: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=600" }
+            { id: 1, name: "عقد الزمرد الملكي", price: 3400, description: "عقد يدوي الصنع مرصع بأحجار الزمرد الأصلية، قطعة نادرة للفخامة.", img: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600" },
+            { id: 2, name: "خاتم الألماس الهندسي", price: 1850, description: "تصميم هندسي فريد يجمع بين الألماس النقي والذهب الأبيض.", img: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=600" },
+            { id: 3, name: "سوار الكريستال الناعم", price: 920, description: "سوار رقيق وبسيط مرصع بالكريستال اللامع لجمال يومي.", img: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=600" },
+            { id: 4, name: "ساعة كلاسيك الذهبية", price: 5200, description: "ساعة فاخرة بطلاء ذهب عيار 24 قيراط ومينا صدفية.", img: "https://images.unsplash.com/photo-1524333865941-24503755744b?w=600" }
         ];
 
         if (localStorage.getItem('luxe_version') !== STORE_VERSION) {
@@ -186,7 +224,6 @@
                     <img src="${p.img}">
                     <h3>${p.name}</h3>
                     <div class="price">${p.price} ر.س</div>
-                    ${p.stock <= 0 ? '<span class="stock-tag">نفدت الكمية</span>' : ''}
                 </div>
             `).join('');
         }
@@ -198,11 +235,8 @@
             document.getElementById('modal-description').innerText = p.description;
             document.getElementById('modal-image').src = p.img;
             const qtyInput = document.getElementById('product-qty');
-            const addBtn = document.getElementById('modal-add-btn');
             qtyInput.value = 1;
-            if(p.stock <= 0) { addBtn.disabled = true; addBtn.innerText = "نفدت الكمية"; } 
-            else { addBtn.disabled = false; addBtn.innerText = "إضافة للحقيبة"; }
-            addBtn.onclick = () => addToCart(p, parseInt(qtyInput.value));
+            document.getElementById('modal-add-btn').onclick = () => addToCart(p, parseInt(qtyInput.value));
             document.getElementById('product-modal').style.display = 'flex';
         }
 
@@ -212,7 +246,6 @@
             localStorage.setItem('luxe_cart', JSON.stringify(cart));
             updateCartUI();
             closeModal();
-            // إظهار التنبيه فقط بدون فتح السلة
             const toast = document.getElementById('toast');
             toast.style.opacity = '1';
             setTimeout(() => { toast.style.opacity = '0'; }, 2000);
@@ -227,10 +260,10 @@
                 return `
                     <div class="cart-item">
                         <div>
-                            <strong style="font-size:0.8rem;">${item.name}</strong><br>
+                            <strong>${item.name}</strong><br>
                             <small>${item.qty} × ${item.price} ر.س</small>
                         </div>
-                        <button onclick="removeFromCart(${item.cartId})" style="border:none; color:red; background:none; font-size:0.75rem;">حذف</button>
+                        <button onclick="removeFromCart(${item.cartId})" style="border:none; color:red; background:none; cursor:pointer; font-size:0.8rem;">حذف</button>
                     </div>
                 `;
             }).join('');
@@ -244,8 +277,7 @@
         }
 
         function toggleCart() {
-            const cartSidebar = document.getElementById('cart-sidebar');
-            cartSidebar.classList.toggle('active');
+            document.getElementById('cart-sidebar').classList.toggle('active');
             document.body.classList.toggle('cart-open');
         }
 
