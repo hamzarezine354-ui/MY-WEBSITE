@@ -38,31 +38,9 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
 
+        /* تم إلغاء عرض شريط الإعلانات */
         .announcement-bar {
-            background-color: var(--primary);
-            color: white;
-            padding: 8px 0;
-            text-align: center;
-            overflow: hidden;
-            width: 100%;
-            /* جعل اتجاه الحاوية من اليسار لليمين لضبط حركة الأنميشن بدقة */
-            direction: ltr; 
-        }
-
-        .announcement-text {
-            display: inline-block;
-            white-space: nowrap;
-            /* تم عكس الحركة لتبدأ من اليمين */
-            animation: moveText 15s linear infinite;
-            font-size: 14px;
-            font-weight: 600;
-            padding-right: 50px;
-        }
-
-        /* تعديل الأنميشن ليأتي من اليمين إلى اليسار */
-        @keyframes moveText {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
+            display: none;
         }
 
         header { 
@@ -72,7 +50,7 @@
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
-            direction: rtl; /* العودة للاتجاه العربي للرأس */
+            direction: rtl;
         }
 
         .logo { font-size: 26px; font-weight: 800; color: var(--primary); letter-spacing: 1px; }
