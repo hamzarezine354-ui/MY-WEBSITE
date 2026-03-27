@@ -30,7 +30,6 @@
             min-height: 100vh; 
         }
 
-        /* إصلاح جذري: الحاوية العلوية ثابتة بالكامل */
         .top-container {
             position: sticky;
             top: 0;
@@ -46,19 +45,24 @@
             text-align: center;
             overflow: hidden;
             width: 100%;
+            /* جعل اتجاه الحاوية من اليسار لليمين لضبط حركة الأنميشن بدقة */
+            direction: ltr; 
         }
 
         .announcement-text {
             display: inline-block;
             white-space: nowrap;
+            /* تم عكس الحركة لتبدأ من اليمين */
             animation: moveText 15s linear infinite;
             font-size: 14px;
             font-weight: 600;
+            padding-right: 50px;
         }
 
+        /* تعديل الأنميشن ليأتي من اليمين إلى اليسار */
         @keyframes moveText {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
 
         header { 
@@ -68,6 +72,7 @@
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
+            direction: rtl; /* العودة للاتجاه العربي للرأس */
         }
 
         .logo { font-size: 26px; font-weight: 800; color: var(--primary); letter-spacing: 1px; }
@@ -177,7 +182,7 @@
 
     <div class="top-container">
         <div class="announcement-bar">
-            <div class="announcement-text">✨  نقدم تخفيض 50% بمناسبة الافتتاح لمتجر LUXORA ✨</div>
+            <div class="announcement-text">✨ نقدم تخفيض 50% بمناسبة الافتتاح لمتجر LUXORA ✨</div>
         </div>
 
         <header id="header">
