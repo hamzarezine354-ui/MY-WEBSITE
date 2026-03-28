@@ -26,7 +26,6 @@
             overflow-x: hidden; 
         }
 
-        /* هيدر نحيف وفخم */
         header { 
             position: sticky;
             top: 0;
@@ -49,7 +48,6 @@
             text-shadow: 0 0 10px rgba(197, 160, 89, 0.3);
         }
 
-        /* أيقونة السلة الفخمة */
         .cart-trigger {
             cursor: pointer;
             position: relative;
@@ -94,7 +92,6 @@
             main { grid-template-columns: repeat(3, 1fr); gap: 40px; padding: 60px 8%; }
         }
 
-        /* كرت المنتج */
         .product-card { 
             background: white; 
             border: 1px solid #f0f0f0;
@@ -129,7 +126,6 @@
             font-family: 'Cinzel', serif;
         }
 
-        /* المودال - تفاصيل المنتج */
         .modal { 
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background: rgba(0,0,0,0.9); z-index: 2000; justify-content: center; align-items: center; 
@@ -137,11 +133,17 @@
         }
         .modal-content { 
             background: white; width: 90%; max-width: 850px; 
-            display: flex; flex-wrap: wrap; position: relative; overflow: hidden;
+            display: flex; flex-wrap: wrap; position: relative; overflow-y: auto; max-height: 90vh;
             border: 1px solid var(--gold);
         }
         .modal-img { flex: 1; min-width: 300px; height: 450px; object-fit: cover; }
         .modal-info { flex: 1; padding: 40px; min-width: 300px; background: white; }
+        
+        @media (max-width: 600px) {
+            .modal-img { height: 250px; min-width: 100%; }
+            .modal-info { padding: 20px; min-width: 100%; }
+        }
+
         .modal-info h2 { font-family: 'Cinzel', serif; font-size: 1.5rem; margin-bottom: 15px; letter-spacing: 1px; }
         .modal-info p { color: #666; font-size: 0.9rem; line-height: 1.8; margin-bottom: 25px; }
 
@@ -152,7 +154,6 @@
         }
         .add-btn:hover { background: var(--gold); color: var(--dark); }
 
-        /* سايدبار الحقيبة */
         .sidebar { 
             position: fixed; top: 0; left: -100%; width: 350px; height: 100vh; 
             background: white; z-index: 3000; padding: 40px 25px; 
@@ -181,9 +182,7 @@
         <div class="logo">LUXORA</div>
         <div class="cart-trigger" onclick="toggleCart()">
             <svg class="cart-icon-svg" viewBox="0 0 24 24">
-                <path d="M4 4h2l3 11h9l3-9h-13" stroke-linecap="round" stroke-linejoin="round"/>
-                <circle cx="10" cy="19" r="1" fill="var(--gold)" stroke="none"/>
-                <circle cx="17" cy="19" r="1" fill="var(--gold)" stroke="none"/>
+                <path d="M6 6V5a6 6 0 1 1 12 0v1m2 0H4a1 1 0 0 0-1 1v11a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9a1 1 0 0 0-1-1z" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
             <span id="cart-count">0</span>
         </div>
@@ -195,7 +194,7 @@
 
     <div id="product-modal" class="modal" onclick="closeModal()">
         <div class="modal-content" onclick="event.stopPropagation()">
-            <div onclick="closeModal()" style="position: absolute; top: 15px; left: 15px; cursor: pointer; color: var(--gold); font-size: 20px;">✕</div>
+            <div onclick="closeModal()" style="position: absolute; top: 15px; left: 15px; z-index: 10; cursor: pointer; color: var(--gold); font-size: 20px; background: rgba(255,255,255,0.8); width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border-radius: 50%;">✕</div>
             <img id="modal-image" src="" class="modal-img">
             <div class="modal-info">
                 <h2 id="modal-title"></h2>
