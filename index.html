@@ -8,19 +8,29 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Cairo:wght@300;400;700&family=Playfair+Display:italic,wght@700&display=swap" rel="stylesheet">
     
     <style>
-        /* --- 1. المتغيرات والألوان الملكية --- */
+        /* ========================================
+        1. المتغيرات والألوان الملكية (Design Tokens)
+        ========================================
+        */
         :root {
             --gold: #c5a059;
             --gold-light: #e2c285;
+            --gold-dark: #8e6d2d;
             --dark: #0a0a0a;
             --dark-soft: #1a1a1a;
             --cream: #fdfdfd;
             --white: #ffffff;
+            --overlay: rgba(0, 0, 0, 0.7);
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             --shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            --transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-smooth: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-fast: all 0.3s ease;
         }
 
-        /* --- 2. تصفير الإعدادات والأساسيات --- */
+        /* ========================================
+        2. إعادة ضبط المتصفح (Reset)
+        ========================================
+        */
         * { 
             margin: 0; 
             padding: 0; 
@@ -35,9 +45,13 @@
             color: var(--dark); 
             overflow-x: hidden; 
             line-height: 1.6;
+            user-select: none; /* منع النسخ للحفاظ على حصرية المحتوى */
         }
 
-        /* --- 3. شاشة التحميل (Loader) --- */
+        /* ========================================
+        3. شاشة التحميل (Loader Section)
+        ========================================
+        */
         #loader {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -51,17 +65,17 @@
         }
         .loader-logo {
             font-family: 'Cinzel', serif;
-            font-size: 45px;
+            font-size: 50px;
             color: var(--gold);
-            letter-spacing: 12px;
-            margin-bottom: 20px;
+            letter-spacing: 15px;
+            margin-bottom: 25px;
             animation: pulse-gold 2s infinite ease-in-out;
-            text-shadow: 0 0 30px rgba(197, 160, 89, 0.5);
+            text-shadow: 0 0 40px rgba(197, 160, 89, 0.4);
         }
         .loader-bar {
-            width: 150px;
-            height: 2px;
-            background: rgba(197, 160, 89, 0.2);
+            width: 200px;
+            height: 1px;
+            background: rgba(197, 160, 89, 0.1);
             position: relative;
             overflow: hidden;
         }
@@ -72,25 +86,29 @@
             width: 100%;
             height: 100%;
             background: var(--gold);
-            animation: loading-slide 1.5s infinite;
+            animation: loading-slide 2s infinite cubic-bezier(0.85, 0, 0.15, 1);
         }
+
         @keyframes pulse-gold {
-            0%, 100% { opacity: 0.4; transform: scale(0.98); }
-            50% { opacity: 1; transform: scale(1); }
+            0%, 100% { opacity: 0.3; transform: scale(0.95); }
+            50% { opacity: 1; transform: scale(1.02); }
         }
         @keyframes loading-slide {
             0% { left: -100%; }
             100% { left: 100%; }
         }
 
-        /* --- 4. شاشة اختيار القسم (Entry Screen) --- */
+        /* ========================================
+        4. شاشة الدخول الرئيسية (Entry Experience)
+        ========================================
+        */
         #entry-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             display: flex;
-            z-index: 9000;
+            z-index: 9500;
             background: var(--dark);
-            transition: transform 1s cubic-bezier(0.85, 0, 0.15, 1);
+            transition: transform 1.2s cubic-bezier(0.85, 0, 0.15, 1);
         }
         .selection-half {
             flex: 1;
@@ -100,20 +118,28 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: var(--transition);
+            transition: var(--transition-smooth);
+        }
+        .selection-half::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            z-index: 5;
+            transition: 0.5s;
         }
         .selection-half img {
             position: absolute;
             width: 100%;
             height: 100%;
             object-fit: cover;
-            opacity: 0.45;
-            transition: 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            filter: grayscale(60%) brightness(0.8);
+            opacity: 0.4;
+            transition: 2s cubic-bezier(0.2, 1, 0.3, 1);
+            filter: grayscale(80%) brightness(0.7);
         }
         .selection-half:hover img {
-            transform: scale(1.15);
-            opacity: 0.8;
+            transform: scale(1.1);
+            opacity: 0.7;
             filter: grayscale(0%) brightness(1);
         }
         .selection-half .content-wrap {
@@ -124,293 +150,282 @@
         .selection-half h2 {
             color: white;
             font-family: 'Cinzel', serif;
-            font-size: 3.5rem;
-            letter-spacing: 10px;
-            text-shadow: 0 10px 30px rgba(0,0,0,0.8);
-            margin-bottom: 15px;
-            transition: var(--transition);
+            font-size: 4rem;
+            letter-spacing: 12px;
+            text-shadow: 0 10px 40px rgba(0,0,0,1);
+            margin-bottom: 20px;
+            transition: var(--transition-smooth);
         }
         .selection-half p {
             color: var(--gold);
-            font-family: 'Cairo', sans-serif;
-            font-size: 1.2rem;
-            letter-spacing: 4px;
+            font-size: 1.1rem;
+            letter-spacing: 5px;
             opacity: 0;
-            transform: translateY(30px);
-            transition: var(--transition);
+            transform: translateY(40px);
+            transition: var(--transition-smooth);
+            text-transform: uppercase;
         }
-        .selection-half:hover h2 { transform: translateY(-10px); color: var(--gold); }
-        .selection-half:hover p { opacity: 1; transform: translateY(0); }
+        .selection-half:hover p {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
-        /* --- 5. الهيدر (Sticky Header) --- */
+        /* ========================================
+        5. نظام الملاحة (Header & Nav)
+        ========================================
+        */
         header { 
             position: sticky;
             top: 0;
             z-index: 2000;
             background: rgba(10, 10, 10, 0.98);
-            backdrop-filter: blur(15px);
-            padding: 20px 8%; 
+            backdrop-filter: blur(20px);
+            padding: 0 8%; 
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
-            border-bottom: 1px solid rgba(197, 160, 89, 0.3);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            height: 85px;
+            border-bottom: 1px solid rgba(197, 160, 89, 0.2);
+            height: 90px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
         }
 
-        #back-btn-container {
+        #back-btn {
             display: none;
             align-items: center;
+            gap: 15px;
             cursor: pointer;
             color: var(--gold);
-            transition: var(--transition);
+            transition: var(--transition-fast);
             opacity: 0;
-            transform: translateX(20px);
+            transform: translateX(30px);
         }
-        #back-btn-container.visible {
+        #back-btn.visible {
             display: flex;
             opacity: 1;
             transform: translateX(0);
         }
-        #back-btn-container:hover { color: var(--white); }
-        
+        #back-btn:hover { color: white; transform: scale(1.05); }
+
         .logo-text { 
             font-family: 'Cinzel', serif;
-            font-size: 32px; 
-            font-weight: 900; 
+            font-size: 36px; 
             color: var(--gold);
-            letter-spacing: 8px;
-            text-align: center;
+            letter-spacing: 10px;
             flex-grow: 1;
+            text-align: center;
+            font-weight: 900;
         }
 
         .cart-trigger {
             cursor: pointer;
             position: relative;
-            padding: 5px;
+            padding: 10px;
+            transition: var(--transition-fast);
         }
+        .cart-trigger:hover { transform: scale(1.1); }
         .cart-icon-svg {
-            width: 32px; height: 32px;
-            fill: none; stroke: var(--gold); stroke-width: 1.2;
-            transition: var(--transition);
+            width: 34px; height: 34px;
+            fill: none; stroke: var(--gold); stroke-width: 1.1;
         }
-        .cart-trigger:hover .cart-icon-svg { stroke: var(--white); transform: scale(1.1); }
-
         #cart-count { 
             background: var(--gold);
-            color: var(--dark);
-            font-size: 12px;
-            width: 24px; height: 24px;
+            color: black;
+            font-size: 11px;
+            width: 22px; height: 22px;
             display: flex; align-items: center; justify-content: center;
             border-radius: 50%; 
-            position: absolute; top: -8px; right: -10px;
+            position: absolute; top: 0; right: 0;
             font-weight: 900;
-            box-shadow: 0 5px 15px rgba(197, 160, 89, 0.4);
         }
 
-        /* --- 6. شبكة عرض المنتجات --- */
+        /* ========================================
+        6. معرض المنتجات (Product Grid)
+        ========================================
+        */
         main { 
             display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 50px; 
-            padding: 80px 5%; 
-            max-width: 1400px;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); 
+            gap: 60px; 
+            padding: 100px 8%; 
+            max-width: 1600px;
             margin: 0 auto;
         }
 
         .product-card { 
-            background: var(--white); 
-            border: 1px solid #eeeeee;
-            padding: 25px; 
-            transition: var(--transition);
+            background: white; 
+            padding: 30px; 
+            transition: var(--transition-smooth);
             cursor: pointer;
             text-align: center;
             position: relative;
-            overflow: hidden;
-        }
-        .product-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 0;
-            background: var(--dark);
-            z-index: 0;
-            transition: var(--transition);
-            opacity: 0.03;
+            border: 1px solid transparent;
         }
         .product-card:hover { 
-            box-shadow: var(--shadow-lg);
             border-color: var(--gold);
-            transform: translateY(-15px);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-20px);
         }
-        .product-card:hover::before { height: 100%; }
         
-        .img-container {
+        .img-holder {
             width: 100%;
-            height: 380px;
+            height: 420px;
             overflow: hidden;
-            margin-bottom: 30px;
-            position: relative;
-            border-radius: 2px;
+            margin-bottom: 35px;
+            background: #f9f9f9;
         }
         .product-card img { 
             width: 100%; height: 100%; object-fit: cover; 
-            transition: 1.2s cubic-bezier(0.2, 1, 0.3, 1);
+            transition: 1.5s cubic-bezier(0.2, 1, 0.3, 1);
         }
         .product-card:hover img { transform: scale(1.1); }
         
         .product-card h3 { 
-            font-size: 1.2rem; 
+            font-size: 1.3rem; 
             color: var(--dark);
-            margin-bottom: 15px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            position: relative;
+            margin-bottom: 12px;
+            letter-spacing: 2px;
+            font-weight: 400;
         }
-        .product-card .price { 
+        .product-card .price-tag { 
             color: var(--gold); 
             font-weight: 900; 
-            font-size: 1.6rem;
+            font-size: 1.8rem;
             font-family: 'Cinzel', serif;
-            display: block;
         }
 
-        /* --- 7. تفاصيل المنتج (Modal) - تحسين المربع والجوال --- */
-        .modal { 
+        /* ========================================
+        7. نافذة التفاصيل (Luxurious Modal)
+        ========================================
+        */
+        .modal-overlay { 
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.95); z-index: 5000; justify-content: center; align-items: center; 
-            backdrop-filter: blur(20px); 
-            padding: 20px;
+            background: rgba(0,0,0,0.96); z-index: 5000; justify-content: center; align-items: center; 
+            backdrop-filter: blur(25px); padding: 30px;
         }
-        .modal-content { 
-            background: var(--white); width: 100%; max-width: 1100px; 
+        .modal-body { 
+            background: white; width: 100%; max-width: 1200px; 
             display: flex; position: relative; 
-            overflow: hidden; border: 1px solid var(--gold);
-            animation: modalSlideUp 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            animation: zoomIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
             max-height: 90vh;
         }
-        @keyframes modalSlideUp { 
-            from { opacity: 0; transform: translateY(40px) scale(0.98); } 
-            to { opacity: 1; transform: translateY(0) scale(1); } 
+        @keyframes zoomIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+
+        .modal-close {
+            position: absolute; top: -50px; left: 0; 
+            cursor: pointer; color: white; font-size: 24px; 
+            letter-spacing: 4px; font-family: 'Cinzel';
         }
 
-        .close-modal {
-            position: absolute; top: 20px; left: 20px; z-index: 100; 
-            cursor: pointer; color: var(--gold); font-size: 20px; 
-            background: var(--dark); width: 45px; height: 45px; 
-            display: flex; align-items: center; justify-content: center; 
-            border-radius: 50%; border: 1px solid var(--gold);
-            transition: var(--transition);
-        }
-        .close-modal:hover { background: var(--gold); color: var(--dark); transform: rotate(90deg); }
-
-        .modal-img { flex: 1.2; min-width: 450px; height: 700px; object-fit: cover; }
-        .modal-info { 
-            flex: 1; padding: 60px; min-width: 450px; background: var(--white); 
+        .modal-image-side { flex: 1.3; height: 750px; overflow: hidden; }
+        .modal-image-side img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .modal-content-side { 
+            flex: 1; padding: 70px; background: white; 
             display: flex; flex-direction: column; justify-content: center; 
         }
         
-        .modal-info h2 { font-family: 'Cinzel', serif; font-size: 2.3rem; margin-bottom: 20px; color: var(--dark); border-bottom: 2px solid var(--gold); display: inline-block; padding-bottom: 10px; }
-        .modal-info p { color: #444; font-size: 1.1rem; line-height: 1.8; margin-bottom: 30px; text-align: justify; }
-
-        .qty-box { margin-bottom: 30px; }
-        .qty-box label { font-size: 13px; color: #888; text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 10px; }
-        .qty-box input { width: 90px; padding: 12px; border: 1px solid #ccc; outline: none; font-weight: bold; text-align: center; }
-
-        .add-btn { 
-            background: var(--dark); color: var(--gold); border: 1px solid var(--gold); 
-            padding: 22px; cursor: pointer; width: 100%; font-weight: 900; 
-            text-transform: uppercase; letter-spacing: 4px; transition: var(--transition);
-            font-size: 1rem;
+        .modal-content-side h2 { 
+            font-family: 'Cinzel', serif; font-size: 2.8rem; 
+            margin-bottom: 25px; color: var(--dark); 
+            line-height: 1.2;
         }
-        .add-btn:hover { background: var(--gold); color: var(--dark); }
-
-        /* --- 8. الحقيبة الجانبية (Sidebar) --- */
-        .sidebar { 
-            position: fixed; top: 0; left: -100%; width: 500px; height: 100vh; 
-            background: var(--white); z-index: 6000; padding: 70px 50px; 
-            transition: 0.8s cubic-bezier(0.9, 0, 0.1, 1); 
-            box-shadow: 25px 0 70px rgba(0,0,0,0.4);
-            border-right: 5px solid var(--gold);
+        .modal-content-side .desc { 
+            color: #666; font-size: 1.15rem; line-height: 2; 
+            margin-bottom: 40px; font-weight: 300;
         }
-        .sidebar.active { left: 0; }
 
-        .sidebar-header {
+        .action-area { display: flex; gap: 20px; align-items: center; }
+        .qty-input {
+            width: 100px; height: 65px; border: 1px solid #ddd;
+            text-align: center; font-size: 1.2rem; font-weight: 700;
+        }
+        .royal-add-btn { 
+            flex: 1; background: var(--dark); color: var(--gold); 
+            border: 1px solid var(--gold); padding: 22px; 
+            cursor: pointer; font-weight: 900; font-size: 1rem;
+            text-transform: uppercase; letter-spacing: 5px; 
+            transition: var(--transition-smooth);
+        }
+        .royal-add-btn:hover { background: var(--gold); color: black; }
+
+        /* ========================================
+        8. السلة الجانبية (The Royal Sidebar)
+        ========================================
+        */
+        .sidebar-cart { 
+            position: fixed; top: 0; left: -100%; width: 550px; height: 100vh; 
+            background: white; z-index: 6000; padding: 80px 60px; 
+            transition: 0.8s cubic-bezier(0.77, 0, 0.175, 1); 
+            box-shadow: 40px 0 100px rgba(0,0,0,0.5);
+            border-right: 6px solid var(--gold);
+        }
+        .sidebar-cart.active { left: 0; }
+
+        .cart-header {
+            display: flex; justify-content: space-between; align-items: flex-end;
+            margin-bottom: 60px; padding-bottom: 20px; border-bottom: 1px solid #eee;
+        }
+        .cart-header h3 { font-family: 'Cinzel'; font-size: 32px; letter-spacing: 5px; }
+
+        .cart-scroll { max-height: 55vh; overflow-y: auto; padding-right: 15px; }
+        .cart-scroll::-webkit-scrollbar { width: 3px; }
+        .cart-scroll::-webkit-scrollbar-thumb { background: var(--gold); }
+
+        .item-row {
             display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 60px; border-bottom: 1px solid #eee; padding-bottom: 25px;
+            padding: 30px 0; border-bottom: 1px solid #f9f9f9;
         }
-        .sidebar-header h3 { font-family: 'Cinzel'; font-size: 28px; color: var(--gold); letter-spacing: 5px; }
+        .item-info b { display: block; font-size: 1.1rem; margin-bottom: 5px; }
+        .item-info span { color: var(--gold); font-family: 'Cinzel'; font-weight: 700; }
+        
+        .delete-icon { cursor: pointer; color: #ccc; transition: 0.3s; font-size: 20px; }
+        .delete-icon:hover { color: #e74c3c; transform: rotate(90deg); }
 
-        .cart-item {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 30px 0; border-bottom: 1px solid #f2f2f2;
+        .cart-footer { margin-top: 50px; padding-top: 40px; border-top: 2px solid #eee; }
+        .total-row { display: flex; justify-content: space-between; font-size: 1.8rem; margin-bottom: 40px; }
+        .total-row b { font-family: 'Cinzel'; color: var(--gold); }
+
+        .checkout-btn { 
+            background: #25D366; color: white; width: 100%; padding: 25px;
+            border: none; font-weight: 900; font-size: 1.2rem; cursor: pointer;
+            letter-spacing: 3px; transition: 0.4s; display: flex; 
+            justify-content: center; align-items: center; gap: 15px;
         }
+        .checkout-btn:hover { background: #1ebd58; transform: translateY(-5px); box-shadow: 0 10px 20px rgba(37,211,102,0.3); }
 
-        .cart-item-info strong { display: block; font-size: 17px; margin-bottom: 8px; color: var(--dark); }
-        .cart-item-info span { color: var(--gold); font-family: 'Cinzel'; font-size: 16px; font-weight: 700; }
-        .remove-item { cursor: pointer; color: #ccc; transition: 0.4s; padding: 12px; font-size: 18px; }
-        .remove-item:hover { color: #e74c3c; transform: scale(1.3); }
-
-        .whatsapp-btn { 
-            background: var(--dark); color: var(--gold); border: 2px solid var(--gold); 
-            padding: 25px; cursor: pointer; width: 100%; font-weight: 900; 
-            margin-top: 60px; letter-spacing: 4px; text-transform: uppercase;
-            transition: var(--transition); font-size: 1.1rem;
-        }
-        .whatsapp-btn:hover { background: #25D366; color: white; border-color: #25D366; }
-
-        /* --- 9. التنبيهات (Toasts) --- */
-        #toast { 
-            position: fixed; bottom: 60px; left: 50%; transform: translateX(-50%); 
-            background: var(--dark); color: var(--gold); padding: 20px 60px; 
-            font-weight: 900; opacity: 0; transition: 0.7s; z-index: 9999;
-            border: 1px solid var(--gold); box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            letter-spacing: 3px; pointer-events: none;
-        }
-
-        /* --- 10. ميديا كويري للجوال (التحسين المربع) --- */
-        @media (max-width: 1024px) {
-            main { grid-template-columns: repeat(2, 1fr); gap: 35px; }
-            .modal-img { min-width: 100%; height: 500px; }
-            .modal-info { min-width: 100%; padding: 40px; }
+        /* ========================================
+        9. التجاوب مع الشاشات (Responsive)
+        ========================================
+        */
+        @media (max-width: 1100px) {
+            .modal-body { flex-direction: column; max-height: 85vh; overflow-y: auto; }
+            .modal-image-side { height: 400px; }
+            .modal-content-side { padding: 40px; }
+            .sidebar-cart { width: 100%; }
         }
 
         @media (max-width: 768px) {
             #entry-screen { flex-direction: column; }
-            .selection-half h2 { font-size: 2.5rem; letter-spacing: 6px; }
-            
-            header { height: 80px; padding: 10px 5%; }
-            .logo-text { font-size: 22px; letter-spacing: 4px; }
-            
-            main { grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 20px 10px; }
-            .product-card { padding: 12px; }
-            .img-container { height: 200px; margin-bottom: 12px; }
+            .selection-half h2 { font-size: 2.5rem; }
+            header { padding: 0 5%; height: 80px; }
+            .logo-text { font-size: 22px; letter-spacing: 5px; }
+            main { grid-template-columns: 1fr 1fr; gap: 15px; padding: 30px 15px; }
+            .img-holder { height: 220px; }
+            .product-card { padding: 15px; }
             .product-card h3 { font-size: 0.9rem; }
-            .product-card .price { font-size: 1.1rem; }
-
-            /* المودال المربع للجوال */
-            .modal-content { 
-                flex-direction: column; 
-                max-height: 85vh; 
-                width: 95%;
-                overflow-y: auto;
-            }
-            .modal-img { 
-                min-width: 100%; 
-                height: auto; 
-                aspect-ratio: 1/1; /* شكل مربع تماماً في الجوال */
-                border-bottom: 1px solid var(--gold);
-            }
-            .modal-info { 
-                min-width: 100%; 
-                padding: 30px 20px; 
-                text-align: center;
-                display: block; /* لضمان التمرير الطبيعي */
-            }
-            .modal-info h2 { font-size: 1.6rem; margin-top: 10px; }
-            .modal-info p { text-align: center; font-size: 0.95rem; }
-            
-            .sidebar { width: 100%; padding: 40px 20px; }
+            .product-card .price-tag { font-size: 1.2rem; }
+            .modal-body { width: 95%; }
+            .modal-image-side { height: 300px; }
+            .modal-content-side h2 { font-size: 1.8rem; }
         }
+
+        #notification { 
+            position: fixed; bottom: 40px; right: 40px; background: var(--dark);
+            color: var(--gold); padding: 20px 40px; border-left: 5px solid var(--gold);
+            transform: translateX(200%); transition: 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 9999; font-weight: 700; box-shadow: var(--shadow-lg);
+        }
+        #notification.show { transform: translateX(0); }
     </style>
 </head>
 <body>
@@ -421,252 +436,250 @@
     </div>
 
     <div id="entry-screen">
-        <div class="selection-half" onclick="enterStore('men')">
-            <img src="https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=1000" alt="Gents Collection">
+        <div class="selection-half" onclick="initStore('men')">
+            <img src="https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=1200" alt="Gents">
             <div class="content-wrap">
                 <h2>GENTS</h2>
-                <p>Elegance & Power</p>
+                <p>Pure Authority & Style</p>
             </div>
         </div>
-        <div class="selection-half" onclick="enterStore('women')">
-            <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=1000" alt="Ladies Collection">
+        <div class="selection-half" onclick="initStore('women')">
+            <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=1200" alt="Ladies">
             <div class="content-wrap">
                 <h2>LADIES</h2>
-                <p>Grace & Luxury</p>
+                <p>Grace & Absolute Luxury</p>
             </div>
         </div>
     </div>
 
     <header>
-        <div id="back-btn-container" onclick="goBackToHome()">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-            <span style="font-size: 11px; margin-right: 10px; font-weight: 900; letter-spacing: 3px;">RETURN</span>
+        <div id="back-btn" onclick="returnHome()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            <span style="font-family:'Cinzel'; font-size:12px; font-weight:900;">BACK</span>
         </div>
-
         <div class="logo-text">LUXORA</div>
-
-        <div class="cart-trigger" onclick="toggleCart()">
+        <div class="cart-trigger" onclick="toggleCartDisplay(true)">
             <svg class="cart-icon-svg" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
             <span id="cart-count">0</span>
         </div>
     </header>
 
-    <main id="products-grid"></main>
+    <main id="main-grid"></main>
 
-    <div id="product-modal" class="modal" onclick="closeModal()">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <div class="close-modal" onclick="closeModal()">✕</div>
-            <img id="modal-image" src="" class="modal-img">
-            <div class="modal-info">
-                <h2 id="modal-title"></h2>
-                <p id="modal-price" style="font-family: 'Cinzel'; color: var(--gold); font-weight: 900; font-size: 1.8rem; margin-bottom: 15px;"></p>
-                <p id="modal-description"></p>
-                <div class="qty-box">
-                    <label>Quantity / اختيار الكمية</label>
-                    <input type="number" id="product-qty" value="1" min="1">
+    <div id="product-modal" class="modal-overlay" onclick="hideModal()">
+        <div class="modal-body" onclick="event.stopPropagation()">
+            <div class="modal-close" onclick="hideModal()">CLOSE ✕</div>
+            <div class="modal-image-side">
+                <img id="m-img" src="" alt="">
+            </div>
+            <div class="modal-content-side">
+                <h2 id="m-title">اسم المنتج الملكي</h2>
+                <p id="m-price" style="font-family:'Cinzel'; color:var(--gold); font-size:2.2rem; font-weight:900; margin-bottom:20px;"></p>
+                <p id="m-desc" class="desc">هذا الوصف يمثل قمة الفخامة والجودة العالية التي نقدمها في لوكسورا، حيث يتم اختيار كل قطعة بعناية فائقة لتناسب ذوقكم الرفيع.</p>
+                
+                <div class="action-area">
+                    <div>
+                        <small style="display:block; margin-bottom:10px; color:#888; font-weight:700;">QUANTITY</small>
+                        <input type="number" id="m-qty" value="1" min="1" class="qty-input">
+                    </div>
+                    <button id="add-to-cart-final" class="royal-add-btn">Add to Bag</button>
                 </div>
-                <button id="modal-add-btn" class="add-btn">Add To Royal Bag</button>
             </div>
         </div>
     </div>
 
-    <div id="cart-sidebar" class="sidebar">
-        <div class="sidebar-header">
-            <h3>MY SELECTION</h3>
-            <span style="cursor: pointer; font-size: 28px; color: var(--gold);" onclick="toggleCart()">✕</span>
+    <div id="sidebar-cart" class="sidebar-cart">
+        <div class="cart-header">
+            <h3>MY BAG</h3>
+            <span style="cursor:pointer; font-size:30px;" onclick="toggleCartDisplay(false)">✕</span>
         </div>
-        <div id="cart-items-container" style="max-height: 50vh; overflow-y: auto; padding-right: 10px;"></div>
-        <div id="cart-summary" style="margin-top: 50px; padding-top: 30px; border-top: 2px solid #f5f5f5;">
-            <div style="display: flex; justify-content: space-between; margin-bottom: 25px;">
-                <span style="font-weight: 400; color: #888; letter-spacing: 2px;">TOTAL / الإجمالي</span>
-                <span id="final-price" style="font-family: 'Cinzel'; font-weight: 900; color: var(--gold); font-size: 1.6rem;">0 درهم</span>
+        
+        <div id="cart-items-list" class="cart-scroll">
             </div>
-            <button class="whatsapp-btn" onclick="checkout()">Confirm Via WhatsApp</button>
+
+        <div class="cart-footer">
+            <div class="total-row">
+                <span>TOTAL</span>
+                <b id="cart-total-price">0 درهم</b>
+            </div>
+            <button class="checkout-btn" onclick="sendWhatsAppOrder()">
+                <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.319 1.592 5.448 0 9.886-4.438 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884 0 2.225.569 3.841 1.68 5.617l-1.011 3.693 3.893-.981zm11.244-8.087c-.019-.032-.064-.052-.133-.082-.069-.033-.404-.199-.465-.223-.061-.024-.105-.034-.149.034-.044.067-.17.213-.208.258-.04.04-.077.046-.145.011-.069-.033-.29-.107-.554-.343-.205-.183-.344-.409-.384-.477-.04-.068-.004-.105.03-.138.032-.03.069-.082.103-.124.034-.04.045-.069.067-.114.022-.045.011-.085-.005-.117-.016-.032-.149-.36-.205-.494-.055-.131-.114-.115-.157-.115-.042-.001-.089-.001-.137-.001-.048 0-.126.018-.191.089-.065.071-.248.243-.248.593s.255.687.291.735c.036.049.503.767 1.218 1.076.17.074.303.118.406.15.172.055.328.047.451.028.138-.022.404-.165.462-.326.057-.161.057-.298.04-.326z"/></svg>
+                CONFIRM ON WHATSAPP
+            </button>
         </div>
     </div>
 
-    <div id="toast">ADDED TO COLLECTION</div>
+    <div id="notification">ADDED TO THE ROYAL COLLECTION</div>
 
     <script>
-        /* قاعدة البيانات الكاملة للمنتجات */
-        const allProducts = [
-            // --- النساء ---
-            { 
-                id: 1, type: 'women', name: "عقد الزمرد الملكي", price: 3400, 
-                description: "تحفة فنية من الزمرد الكولومبي الأصيل، محاطة بإطار من الذهب الأبيض عيار 18 قيراط. صُممت هذه القطعة لتخطف الأنظار في المناسبات الملكية الفاخرة.", 
-                img: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=800" 
-            },
-            { 
-                id: 2, type: 'women', name: "خاتم الألماس الهندسي", price: 1850, 
-                description: "خاتم عصري يجسد التوازن بين الفخامة والبساطة. يتميز بقطع ألماس مركزية تعكس الضوء من كل زاوية، مما يجعله مثالياً للاستخدام اليومي الفاخر.", 
-                img: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800" 
-            },
-            { 
-                id: 3, type: 'women', name: "سوار الكريستال الناعم", price: 920, 
-                description: "سوار رقيق مصنوع يدويًا من كريستال السواروفسكي الصافي، يضفي لمسة من الأنوثة والنعومة على معصمك مع بريق هادئ لا يضاهى.", 
-                img: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=800" 
-            },
-            { 
-                id: 4, type: 'women', name: "أقراط الياقوت الأزرق", price: 1200, 
-                description: "أقراط متدلية سحرية تضم أحجار الياقوت الأزرق الطبيعي. مستوحاة من العصور الكلاسيكية العريقة لتعطيك إطلالة الأميرات.", 
-                img: "https://images.unsplash.com/photo-1630019852942-f89202989a59?w=800" 
-            },
-            { 
-                id: 5, type: 'women', name: "قلادة اللؤلؤ الطبيعي", price: 2700, 
-                description: "عقد من لآلئ البحار الجنوبية المختارة بعناية فائقة، تتوسطها قفلة من الذهب الخالص عيار 22 لضمان الفخامة والجودة.", 
-                img: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800" 
-            },
-            { 
-                id: 11, type: 'women', name: "خاتم الياقوت القرمزي", price: 2100, 
-                description: "خاتم نسائي ساحر مرصع بحجر ياقوت أحمر طبيعي، يحيط به هالة من الفصوص الصغيرة المتلألئة لإطلالة مفعمة بالأنوثة.", 
-                img: "https://media.istockphoto.com/id/2077222877/fr/photo/bague-bijoux-pierres-pr%C3%A9cieuses.webp?a=1&b=1&s=612x612&w=0&k=20&c=OUIgGMG3OGlm4MnWHh3HnHY7NNypX-WglWqKZcDc5CY=" 
-            },
-            // --- الرجال ---
-            { 
-                id: 6, type: 'men', name: "ساعة ليمتد إيديشين Gold", price: 5200, 
-                description: "ساعة ميكانيكية ذات إصدار محدود، تتميز بهيكل مطلي بالذهب عيار 24. دقة سويسرية متناهية تليق بالرجل العصري الطموح.", 
-                img: "https://images.unsplash.com/photo-1772949400376-5965cc2256ea?q=80&w=870" 
-            },
-            { 
-                id: 8, type: 'men', name: "خاتم فضة 925 نقي", price: 7000, 
-                description: "قطعة فنية فريدة من الفضة النقية بتصميم مستوحى من العمارة الأندلسية العريقة، مرصع بحجر عقيق يماني أصلي.", 
-                img: "https://fathyibrahim.com/cdn/shop/files/MR00-3S-8-1_1000x.jpg?v=1742217351" 
-            },
-            { 
-                id: 9, type: 'men', name: "ساعة الستانلس الكلاسيكية", price: 4100, 
-                description: "ساعة تجمع بين العملية والفخامة، مع ميناء أسود ملكي وعقارب مضيئة في الظلام. مقاومة للماء حتى عمق 100 متر.", 
-                img: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=800" 
-            },
-            { 
-                id: 10, type: 'men', name: "أزرار أكمام ألماسية", price: 1550, 
-                description: "أزرار أكمام مصنوعة من البلاتين المرصع بحبيبات الألماس الدقيقة لتكتمل أناقتك الرسمية في الاجتماعات والمناسبات الخاصة.", 
-                img: "https://images.unsplash.com/photo-1617113931036-70138927054a?w=800" 
-            }
+        /* ========================================
+        10. قاعدة البيانات (The Complete Inventory)
+        ========================================
+        */
+        const inventory = [
+            { id: 1, type: 'women', name: "عقد الزمرد الإمبراطوري", price: 14500, img: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=800", desc: "قطعة نادرة من الزمرد الكولومبي المحاط بالألماس الأبيض عيار 18، صُمم ليكون إرثاً تتناقله الأجيال." },
+            { id: 2, type: 'women', name: "تاج العروس الماسي", price: 28000, img: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800", desc: "تاج مرصع بـ 500 قطعة من الألماس الحر، يمنح العروس إطلالة ملكية لا تُنسى في ليلة العمر." },
+            { id: 3, type: 'women', name: "سوار الذهب الوردي", price: 4200, img: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=800", desc: "سوار ناعم من الذهب الوردي عيار 21، يتميز بتصميم عصري يجمع بين البساطة والرقي." },
+            { id: 4, type: 'women', name: "أقراط الياقوت الأحمر", price: 8900, img: "https://images.unsplash.com/photo-1630019852942-f89202989a59?w=800", desc: "أقراط تضم حجرين من الياقوت الأحمر النقي، مستوحاة من المجوهرات الكلاسيكية للقرن الثامن عشر." },
+            { id: 5, type: 'women', name: "خاتم السوليتير الفاخر", price: 12500, img: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800", desc: "خاتم خطوبة بقطعة ألماس مركزية بوزن 2 قيراط، مصقولة بدقة متناهية لتعكس الضوء كالنجم." },
+            { id: 6, type: 'women', name: "عقد اللؤلؤ البحري", price: 6700, img: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800", desc: "لآلئ طبيعية مستخرجة من أعماق البحار، منسقة يدوياً بخيوط من الحرير والذهب." },
+            
+            { id: 7, type: 'men', name: "ساعة الكرونوغراف الذهبية", price: 22000, img: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=800", desc: "ساعة ميكانيكية مصنوعة بالكامل من الذهب الأصفر، مقاومة للماء وتتميز بدقة سويسرية." },
+            { id: 8, type: 'men', name: "خاتم العقيق اليماني", price: 3500, img: "https://fathyibrahim.com/cdn/shop/files/MR00-3S-8-1_1000x.jpg?v=1742217351", desc: "خاتم من الفضة النقية عيار 925 مرصع بحجر عقيق يماني أصلي بلون كبدي ملكي." },
+            { id: 9, type: 'men', name: "ساعة الطيار الاحترافية", price: 15400, img: "https://images.unsplash.com/photo-1772949400376-5965cc2256ea?w=800", desc: "إصدار خاص لهواة الساعات الفخمة، بقرص من التيتانيوم وزجاج ياقوتي مضاد للخدش." },
+            { id: 10, type: 'men', name: "أزرار أكمام ألماسية", price: 2100, img: "https://images.unsplash.com/photo-1617113931036-70138927054a?w=800", desc: "إكسسوار البدلة الرسمي الأرقى، مرصع بقطع ألماس صغيرة تضفي لمسة من الوقار." },
+            { id: 11, type: 'men', name: "سوار الجلد والبلاتين", price: 1800, img: "https://images.unsplash.com/photo-1614164185128-e4ec99c436d7?w=800", desc: "سوار رجالي من جلد التمساح الطبيعي مع قفل مغناطيسي من معدن البلاتين الثمين." },
+            { id: 12, type: 'men', name: "عطر لوكسورا أوم", price: 1200, img: "https://images.unsplash.com/photo-1523293182086-7651a899d37f?w=800", desc: "رائحة العود والبخور المركز، عطر يدوم طويلاً صُمم خصيصاً لرجال النخبة." }
         ];
 
-        let cart = JSON.parse(localStorage.getItem('luxora_full_storage')) || [];
+        /* ========================================
+        11. محرك العمليات (Logic Engine)
+        ========================================
+        */
+        let cart = JSON.parse(localStorage.getItem('luxora_pro_cart')) || [];
 
-        function enterStore(category) {
-            const filtered = allProducts.filter(p => p.type === category);
-            renderProducts(filtered);
+        // تشغيل المتجر بناءً على القسم المختار
+        function initStore(category) {
+            const filtered = inventory.filter(p => p.type === category);
+            displayProducts(filtered);
             document.getElementById('entry-screen').style.transform = 'translateY(-100%)';
-            document.getElementById('back-btn-container').classList.add('visible');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('back-btn').classList.add('visible');
+            window.scrollTo(0,0);
         }
 
-        function goBackToHome() {
+        // العودة لشاشة الاختيار
+        function returnHome() {
             document.getElementById('entry-screen').style.transform = 'translateY(0)';
-            document.getElementById('back-btn-container').classList.remove('visible');
+            document.getElementById('back-btn').classList.remove('visible');
         }
 
-        function renderProducts(products) {
-            const grid = document.getElementById('products-grid');
-            grid.innerHTML = products.map(p => `
-                <div class="product-card" onclick="openProduct(${p.id})">
-                    <div class="img-container">
-                        <img src="${p.img}" alt="${p.name}" loading="lazy">
+        // عرض المنتجات في الشبكة
+        function displayProducts(items) {
+            const grid = document.getElementById('main-grid');
+            grid.innerHTML = items.map(item => `
+                <div class="product-card" onclick="showProductDetails(${item.id})">
+                    <div class="img-holder">
+                        <img src="${item.img}" alt="${item.name}" loading="lazy">
                     </div>
-                    <h3>${p.name}</h3>
-                    <span class="price">${p.price.toLocaleString()} درهم</span>
+                    <h3>${item.name}</h3>
+                    <div class="price-tag">${item.price.toLocaleString()} درهم</div>
                 </div>
             `).join('');
         }
 
-        function openProduct(id) {
-            const product = allProducts.find(p => p.id === id);
+        // إظهار تفاصيل المنتج في المودال
+        function showProductDetails(id) {
+            const product = inventory.find(p => p.id === id);
             if(!product) return;
-            
-            document.getElementById('modal-title').innerText = product.name;
-            document.getElementById('modal-price').innerText = product.price.toLocaleString() + " درهم";
-            document.getElementById('modal-description').innerText = product.description;
-            document.getElementById('modal-image').src = product.img;
-            document.getElementById('product-qty').value = 1;
-            
-            document.getElementById('modal-add-btn').onclick = function() {
-                addToCart(product, parseInt(document.getElementById('product-qty').value));
+
+            document.getElementById('m-title').innerText = product.name;
+            document.getElementById('m-price').innerText = product.price.toLocaleString() + " درهم";
+            document.getElementById('m-desc').innerText = product.desc;
+            document.getElementById('m-img').src = product.img;
+            document.getElementById('m-qty').value = 1;
+
+            document.getElementById('add-to-cart-final').onclick = () => {
+                const qty = parseInt(document.getElementById('m-qty').value);
+                if(qty < 1) return alert("الرجاء اختيار كمية صالحة");
+                addToCart(product, qty);
             };
-            
+
             document.getElementById('product-modal').style.display = 'flex';
         }
 
-        function closeModal() {
-            document.getElementById('product-modal').style.display = 'none';
-        }
+        // إخفاء المودال
+        function hideModal() { document.getElementById('product-modal').style.display = 'none'; }
 
+        // إضافة للسلة
         function addToCart(product, qty) {
-            const newItem = { ...product, qty: qty, uniqueId: Date.now() };
-            cart.push(newItem);
-            saveCart();
-            closeModal();
-            showToast();
-        }
-
-        function showToast() {
-            const toast = document.getElementById('toast');
-            toast.style.opacity = '1';
-            setTimeout(() => toast.style.opacity = '0', 2500);
-        }
-
-        function removeFromCart(uid) {
-            cart = cart.filter(item => item.uniqueId !== uid);
-            saveCart();
-        }
-
-        function saveCart() {
-            localStorage.setItem('luxora_full_storage', JSON.stringify(cart));
-            updateCartUI();
-        }
-
-        function updateCartUI() {
-            document.getElementById('cart-count').innerText = cart.length;
-            const container = document.getElementById('cart-items-container');
-            let total = 0;
-            
-            container.innerHTML = cart.map(item => {
-                total += (item.price * item.qty);
-                return `
-                    <div class="cart-item">
-                        <div class="cart-item-info">
-                            <strong>${item.name}</strong>
-                            <span>${item.qty} × ${item.price.toLocaleString()} درهم</span>
-                        </div>
-                        <div class="remove-item" onclick="removeFromCart(${item.uniqueId})">✕</div>
-                    </div>
-                `;
-            }).join('');
-            
-            document.getElementById('final-price').innerText = total.toLocaleString() + " درهم";
-        }
-
-        function toggleCart() {
-            document.getElementById('cart-sidebar').classList.toggle('active');
-        }
-
-        function checkout() {
-            if (cart.length === 0) {
-                alert("الحقيبة فارغة حالياً!");
-                return;
+            const existing = cart.find(i => i.id === product.id);
+            if(existing) {
+                existing.qty += qty;
+            } else {
+                cart.push({ ...product, qty, tempId: Date.now() });
             }
-            const phone = "212621445495";
-            let message = "*طلب ملكي جديد من LUXORA*\n";
-            message += "--------------------------\n";
-            cart.forEach((item, index) => {
-                message += `${index + 1}. ${item.name} | الكمية: ${item.qty}\n`;
-            });
-            message += "--------------------------\n";
-            message += `*الإجمالي:* ${document.getElementById('final-price').innerText}\n`;
-            message += "يرجى التواصل لتأكيد التوصيل.";
-            
-            window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
+            syncCart();
+            hideModal();
+            triggerNotify();
         }
 
+        // حذف من السلة
+        function deleteFromCart(tempId) {
+            cart = cart.filter(i => i.tempId !== tempId);
+            syncCart();
+        }
+
+        // مزامنة السلة مع التخزين المحلي والواجهة
+        function syncCart() {
+            localStorage.setItem('luxora_pro_cart', JSON.stringify(cart));
+            updateCartInterface();
+        }
+
+        // تحديث أرقام وأشكال السلة
+        function updateCartInterface() {
+            const count = cart.reduce((total, item) => total + item.qty, 0);
+            document.getElementById('cart-count').innerText = count;
+
+            const list = document.getElementById('cart-items-list');
+            let total = 0;
+
+            if(cart.length === 0) {
+                list.innerHTML = `<p style="text-align:center; padding:50px; color:#ccc; font-family:'Cinzel';">Bag is empty</p>`;
+            } else {
+                list.innerHTML = cart.map(item => {
+                    total += (item.price * item.qty);
+                    return `
+                        <div class="item-row">
+                            <div class="item-info">
+                                <b>${item.name}</b>
+                                <span>${item.qty} × ${item.price.toLocaleString()} درهم</span>
+                            </div>
+                            <div class="delete-icon" onclick="deleteFromCart(${item.tempId})">✕</div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            document.getElementById('cart-total-price').innerText = total.toLocaleString() + " درهم";
+        }
+
+        // فتح وإغلاق السلة
+        function toggleCartDisplay(open) {
+            document.getElementById('sidebar-cart').classList.toggle('active', open);
+        }
+
+        // إرسال الطلب عبر واتساب
+        function sendWhatsAppOrder() {
+            if (cart.length === 0) return alert("السلة فارغة!");
+            
+            let message = "*LUXORA | طلب ملكي جديد*\n";
+            message += "=========================\n";
+            cart.forEach((item, idx) => {
+                message += `${idx + 1}. ${item.name} | الكمية: ${item.qty}\n`;
+            });
+            message += "=========================\n";
+            message += `*الإجمالي النهائي:* ${document.getElementById('cart-total-price').innerText}\n\n`;
+            message += "أرغب في تأكيد طلبي والاستفسار عن موعد التوصيل.";
+
+            const encoded = encodeURIComponent(message);
+            window.open(`https://wa.me/212621445495?text=${encoded}`, '_blank');
+        }
+
+        // تنبيه الإضافة
+        function triggerNotify() {
+            const n = document.getElementById('notification');
+            n.classList.add('show');
+            setTimeout(() => n.classList.remove('show'), 3000);
+        }
+
+        // عند تحميل الصفحة
         window.onload = () => {
-            updateCartUI();
+            syncCart();
             setTimeout(() => {
                 const loader = document.getElementById('loader');
                 loader.style.opacity = '0';
                 setTimeout(() => loader.style.visibility = 'hidden', 1000);
-            }, 2000);
+            }, 2500);
         };
     </script>
 </body>
