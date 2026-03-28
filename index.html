@@ -26,6 +26,31 @@
             overflow-x: hidden; 
         }
 
+        /* --- شاشة التحميل الفخمة --- */
+        #loader {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease, visibility 0.8s;
+        }
+        .loader-logo {
+            font-family: 'Cinzel', serif;
+            font-size: 40px;
+            color: var(--gold);
+            letter-spacing: 10px;
+            animation: pulse 2s infinite ease-in-out;
+            text-shadow: 0 0 20px rgba(197, 160, 89, 0.4);
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: scale(0.95); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+        /* ------------------------- */
+
         header { 
             position: sticky;
             top: 0;
@@ -178,6 +203,10 @@
 </head>
 <body>
 
+    <div id="loader">
+        <div class="loader-logo">LUXORA</div>
+    </div>
+
     <header>
         <div class="logo">LUXORA</div>
         <div class="cart-trigger" onclick="toggleCart()">
@@ -192,7 +221,7 @@
 
     <main id="products-container"></main>
 
-    <div id="toast">تم الاضافة الى الحقيبة</div>
+    <div id="toast">أُضيف إلى مجموعتك المختارة</div>
 
     <div id="product-modal" class="modal" onclick="closeModal()">
         <div class="modal-content" onclick="event.stopPropagation()">
@@ -218,7 +247,7 @@
         </div>
         <div id="cart-items" style="max-height: 65vh; overflow-y: auto;"></div>
         <div id="cart-total" style="margin-top: 25px; font-weight: bold; border-top: 1px solid #eee; padding-top: 20px; text-align: center; font-family: 'Cinzel'; font-size: 1.2rem;"></div>
-        <button class="whatsapp-btn" onclick="sendWhatsApp()">إتمام الطلب عبر الواتساب</button>
+        <button class="whatsapp-btn" onclick="sendWhatsApp()">إتمام الطلب الملكي</button>
     </div>
 
     <script>
@@ -297,7 +326,17 @@
             window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
-        window.onload = () => { displayProducts(); updateCartUI(); };
+        // إخفاء شاشة التحميل عند اكتمال تحميل الصفحة
+        window.onload = () => { 
+            displayProducts(); 
+            updateCartUI();
+            
+            setTimeout(() => {
+                const loader = document.getElementById('loader');
+                loader.style.opacity = '0';
+                loader.style.visibility = 'hidden';
+            }, 1500); // تظهر لمدة ثانية ونصف لتعطي فخامة
+        };
     </script>
 </body>
 </html>
