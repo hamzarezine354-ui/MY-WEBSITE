@@ -71,7 +71,7 @@
             display: flex; align-items: center; justify-content: center; font-weight: bold; 
         }
 
-        /* --- 3. المنتجات (2 في الصف مع ألوان كاملة) --- */
+        /* --- 3. المنتجات (2 في الصف مع خاصية التكبير) --- */
         main { 
             display: grid; grid-template-columns: repeat(2, 1fr); 
             gap: 12px; padding: 15px; max-width: 1400px; margin: 0 auto;
@@ -82,11 +82,20 @@
             background: var(--white); border: 1px solid #eee; padding: 12px; 
             text-align: center; transition: var(--transition); border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+            cursor: pointer;
         }
-        .product-card:active { transform: scale(0.96); }
+        
         .img-container { width: 100%; height: 180px; overflow: hidden; margin-bottom: 12px; border-radius: 4px; }
         @media (min-width: 768px) { .img-container { height: 280px; } }
-        .product-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.8s; }
+        
+        /* تأثير التكبير المطلبوب */
+        .product-card img { 
+            width: 100%; height: 100%; object-fit: cover; 
+            transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1); 
+        }
+        .product-card:hover img { transform: scale(1.12); } /* يكبر عند التمرير */
+        .product-card:active { transform: scale(0.96); } /* ينضغط قليلاً عند اللمس */
+
         .product-card h3 { font-size: 0.9rem; margin-bottom: 5px; height: 2.5em; overflow: hidden; font-weight: 700; color: #333; }
         .product-card .price { color: var(--gold); font-weight: 900; font-family: 'Cinzel', serif; font-size: 1.1rem; }
 
@@ -215,7 +224,6 @@
     <div id="toast">تمت الإضافة بنجاح</div>
 
     <script>
-        // قاعدة البيانات (صور حية 100%)
         const db = [
             { id: 1, type: 'women', name: "عقد الزمرد الملكي", price: 3400, desc: "زمرد كولومبي طبيعي مرصع بذهب 18 قيراط.", img: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600" },
             { id: 2, type: 'women', name: "خاتم الياقوت الأحمر", price: 2100, desc: "تصميم كلاسيكي يبرز جمال الياقوت الطبيعي.", img: "https://media.istockphoto.com/id/2077222877/fr/photo/bague-bijoux-pierres-pr%C3%A9cieuses.webp?a=1&b=1&s=612x612&w=0&k=20&c=OUIgGMG3OGlm4MnWHh3HnHY7NNypX-WglWqKZcDc5CY=" },
@@ -225,7 +233,6 @@
 
         let cart = [];
 
-        // إدارة الشاشات
         function enterStore(cat) {
             const products = db.filter(p => p.type === cat);
             render(products);
@@ -239,7 +246,6 @@
             document.getElementById('back-home').style.display = 'none';
         }
 
-        // عرض المنتجات
         function render(items) {
             const grid = document.getElementById('products-grid');
             grid.innerHTML = items.map(p => `
@@ -251,7 +257,6 @@
             `).join('');
         }
 
-        // تفاصيل المنتج
         function openProduct(id) {
             const p = db.find(x => x.id === id);
             document.getElementById('modal-title').innerText = p.name;
@@ -260,7 +265,7 @@
             document.getElementById('modal-image').src = p.img;
             document.getElementById('add-to-cart-btn').onclick = () => addToCart(p);
             document.getElementById('product-modal').style.display = 'flex';
-            document.body.style.overflow = 'hidden'; // قفل التمرير
+            document.body.style.overflow = 'hidden';
         }
 
         function closeModal() {
@@ -270,7 +275,6 @@
             }
         }
 
-        // إدارة الحقيبة (Sidebar)
         function toggleCart() {
             const sb = document.getElementById('cart-sidebar');
             const ov = document.getElementById('cart-overlay');
@@ -327,7 +331,6 @@
             window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`);
         }
 
-        // اللودر التلقائي
         window.onload = () => {
             setTimeout(() => {
                 document.getElementById('loader').style.opacity = '0';
