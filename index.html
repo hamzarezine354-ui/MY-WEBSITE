@@ -55,7 +55,7 @@
         
         .cart-icon-wrap { 
             position: relative; 
-            cursor: pointer; 
+            cursor: pointer;
             padding: 5px; 
             user-select: none;
         }
@@ -76,7 +76,7 @@
             background: var(--white); border: 1px solid #eee; padding: 12px; 
             text-align: center; transition: var(--transition); border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.02);
-            cursor: pointer; 
+            cursor: pointer;
             user-select: none;
         }
         
@@ -114,8 +114,8 @@
             width: 35px; height: 35px; border: 1px solid var(--gold); border-radius: 50%;
             display: flex; align-items: center; justify-content: center; 
             color: var(--gold);
-            cursor: pointer; 
-            user-select: none; 
+            cursor: pointer;
+            user-select: none;
             transition: var(--transition);
         }
         .close-btn-royal:active { background: var(--gold); color: white; transform: scale(0.9); }
@@ -123,7 +123,7 @@
         .btn-royal { 
             background: var(--dark); color: var(--gold); border: 1px solid var(--gold); 
             padding: 18px; width: 100%; font-weight: 900; 
-            cursor: pointer; 
+            cursor: pointer;
             letter-spacing: 2px;
             user-select: none;
             transition: 0.3s;
@@ -241,9 +241,9 @@
         function toggleCart() {
             const sb = document.getElementById('cart-sidebar');
             const ov = document.getElementById('cart-overlay');
-            sb.classList.toggle('active');
-            ov.style.display = sb.classList.contains('active') ? 'block' : 'none';
-            document.body.style.overflow = sb.classList.contains('active') ? 'hidden' : 'auto';
+            const isActive = sb.classList.toggle('active');
+            ov.style.display = isActive ? 'block' : 'none';
+            document.body.style.overflow = isActive ? 'hidden' : 'auto';
         }
 
         function addToCart(p) {
@@ -252,8 +252,14 @@
             closeModal();
             showToast();
             
-            // فتح الحقيبة تلقائياً بعد إغلاق المودال مباشرة
-            setTimeout(toggleCart, 300);
+            // التعديل الجذري هنا: إجبار الحقيبة على الفتح
+            setTimeout(() => {
+                const sb = document.getElementById('cart-sidebar');
+                const ov = document.getElementById('cart-overlay');
+                sb.classList.add('active'); // نستخدم add وليس toggle
+                ov.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            }, 300);
         }
 
         function updateUI() {
