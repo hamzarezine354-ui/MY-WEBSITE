@@ -30,7 +30,6 @@
             line-height: 1.5;
         }
 
-        /* --- اللودر --- */
         #loader {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: var(--dark); display: flex; flex-direction: column;
@@ -43,7 +42,6 @@
         }
         @keyframes pulse { 0%, 100% { opacity: 0.3; transform: scale(0.95); } 50% { opacity: 1; transform: scale(1); } }
 
-        /* --- الهيدر --- */
         header { 
             position: sticky; top: 0; z-index: 2000;
             background: rgba(10, 10, 10, 0.98); padding: 15px 5%; 
@@ -65,7 +63,6 @@
             display: flex; align-items: center; justify-content: center; font-weight: bold; 
         }
 
-        /* --- شبكة المنتجات --- */
         main { 
             display: grid; grid-template-columns: repeat(2, 1fr); 
             gap: 12px; padding: 15px; max-width: 1400px; margin: 0 auto;
@@ -88,12 +85,10 @@
             transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1); 
         }
         .product-card:hover img { transform: scale(1.12); }
-        .product-card:active { transform: scale(0.96); }
 
         .product-card h3 { font-size: 0.9rem; margin-bottom: 5px; height: 2.5em; overflow: hidden; font-weight: 700; color: #333; }
         .product-card .price { color: var(--gold); font-weight: 900; font-family: 'Cinzel', serif; font-size: 1.1rem; }
 
-        /* --- المودال --- */
         .modal { 
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background: rgba(0,0,0,0.85); z-index: 5000; justify-content: center; align-items: flex-end; 
@@ -109,28 +104,22 @@
         @media (min-width: 768px) { .modal-content { width: 450px; border-radius: 15px; } }
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
 
-        /* --- الأزرار --- */
         .close-btn-royal {
             width: 35px; height: 35px; border: 1px solid var(--gold); border-radius: 50%;
             display: flex; align-items: center; justify-content: center; 
             color: var(--gold);
             cursor: pointer;
-            user-select: none;
             transition: var(--transition);
         }
-        .close-btn-royal:active { background: var(--gold); color: white; transform: scale(0.9); }
 
         .btn-royal { 
             background: var(--dark); color: var(--gold); border: 1px solid var(--gold); 
             padding: 18px; width: 100%; font-weight: 900; 
             cursor: pointer;
             letter-spacing: 2px;
-            user-select: none;
             transition: 0.3s;
         }
-        .btn-royal:active { background: var(--gold); color: var(--dark); }
 
-        /* --- الحقيبة --- */
         .sidebar-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.6); z-index: 5999; backdrop-filter: blur(3px);
@@ -146,7 +135,7 @@
         #cart-items-wrap { flex: 1; overflow-y: auto; padding: 20px; }
         .sidebar-footer { padding: 25px; border-top: 1px solid #eee; }
 
-        .remove-item { cursor: pointer; color: #ccc; user-select: none; padding: 5px; transition: 0.3s; }
+        .remove-item { cursor: pointer; color: #ccc; padding: 5px; transition: 0.3s; }
         .remove-item:hover { color: #ff4d4d; }
 
         #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--gold); color: #000; padding: 12px 30px; border-radius: 30px; font-weight: bold; opacity: 0; transition: 0.4s; z-index: 10001; pointer-events: none; }
@@ -235,7 +224,10 @@
 
         function closeModal() {
             document.getElementById('product-modal').style.display = 'none';
-            if(!document.getElementById('cart-sidebar').classList.contains('active')) document.body.style.overflow = 'auto';
+            // إذا لم تكن الحقيبة مفتوحة، نرجع التمرير للوضع الطبيعي
+            if(!document.getElementById('cart-sidebar').classList.contains('active')) {
+                document.body.style.overflow = 'auto';
+            }
         }
 
         function toggleCart() {
@@ -249,17 +241,22 @@
         function addToCart(p) {
             cart.push({ ...p, uid: Date.now() });
             updateUI();
+            
+            // 1. إغلاق نافذة المنتج فوراً
             closeModal();
+            
+            // 2. إظهار التوست
             showToast();
             
-            // التعديل الجذري هنا: إجبار الحقيبة على الفتح
+            // 3. فتح الحقيبة (إجبار الفتح بالحاسوب والموبايل)
             setTimeout(() => {
                 const sb = document.getElementById('cart-sidebar');
                 const ov = document.getElementById('cart-overlay');
-                sb.classList.add('active'); // نستخدم add وليس toggle
+                
+                sb.classList.add('active'); 
                 ov.style.display = 'block';
-                document.body.style.overflow = 'hidden';
-            }, 300);
+                document.body.style.overflow = 'hidden'; // نمنع التمرير لأن الحقيبة مفتوحة
+            }, 100); 
         }
 
         function updateUI() {
