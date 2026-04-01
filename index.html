@@ -51,12 +51,17 @@
         }
         .logo-text { font-family: 'Cinzel', serif; font-size: 24px; color: var(--gold); letter-spacing: 3px; flex-grow: 1; text-align: center; user-select: none; }
         
+        /* تفاعل أيقونة الحقيبة */
         .cart-icon-wrap { 
             position: relative; 
             cursor: pointer;
             padding: 5px; 
             user-select: none;
+            transition: var(--transition);
         }
+        .cart-icon-wrap:hover { transform: scale(1.15); }
+        .cart-icon-wrap:active { transform: scale(0.9); }
+
         #cart-count { 
             background: var(--gold); color: #000; font-size: 10px; width: 18px; height: 18px; 
             border-radius: 50%; position: absolute; top: 0; right: 0; 
@@ -69,12 +74,18 @@
         }
         @media (min-width: 1024px) { main { grid-template-columns: repeat(4, 1fr); gap: 25px; padding: 40px; } }
 
+        /* تفاعل بطاقات المنتجات */
         .product-card { 
             background: var(--white); border: 1px solid #eee; padding: 12px; 
             text-align: center; transition: var(--transition); border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.02);
             cursor: pointer;
             user-select: none;
+        }
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            border-color: var(--gold);
         }
         
         .img-container { width: 100%; height: 180px; overflow: hidden; margin-bottom: 12px; border-radius: 4px; }
@@ -84,7 +95,7 @@
             width: 100%; height: 100%; object-fit: cover; 
             transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1); 
         }
-        .product-card:hover img { transform: scale(1.12); }
+        .product-card:hover img { transform: scale(1.1); }
 
         .product-card h3 { font-size: 0.9rem; margin-bottom: 5px; height: 2.5em; overflow: hidden; font-weight: 700; color: #333; }
         .product-card .price { color: var(--gold); font-weight: 900; font-family: 'Cinzel', serif; font-size: 1.1rem; }
@@ -103,9 +114,9 @@
             display: flex; flex-direction: column;
             animation: slideUp 0.4s ease-out;
         }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
         @media (min-width: 768px) { .modal-content { width: 480px; border-radius: 15px; } }
         
-        /* تعديل حاوية الصورة لضمان تناسق العقد */
         .modal-img-box {
             width: 100%;
             height: 300px;
@@ -118,7 +129,7 @@
         .modal-img { 
             max-width: 100%; 
             max-height: 100%; 
-            object-fit: contain; /* يمنع اقتصاص الصورة */
+            object-fit: contain; 
         }
         
         .modal-body { 
@@ -132,6 +143,7 @@
             background: white; 
         }
 
+        /* تفاعل زر الإغلاق */
         .close-btn-royal {
             width: 35px; height: 35px; border: 1px solid var(--gold); border-radius: 50%;
             display: flex; align-items: center; justify-content: center; 
@@ -139,13 +151,29 @@
             cursor: pointer;
             transition: var(--transition);
         }
+        .close-btn-royal:hover {
+            background: var(--gold);
+            color: white;
+            transform: rotate(90deg);
+        }
 
+        /* تفاعل الأزرار الكبيرة */
         .btn-royal { 
             background: var(--dark); color: var(--gold); border: 1px solid var(--gold); 
             padding: 18px; width: 100%; font-weight: 900; 
             cursor: pointer;
             letter-spacing: 2px;
-            transition: 0.3s;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-royal:hover {
+            background: var(--gold);
+            color: var(--dark);
+            box-shadow: 0 5px 15px rgba(197, 160, 89, 0.4);
+        }
+        .btn-royal:active {
+            transform: scale(0.97);
         }
 
         .sidebar-overlay {
@@ -163,8 +191,9 @@
         #cart-items-wrap { flex: 1; overflow-y: auto; padding: 20px; }
         .sidebar-footer { padding: 25px; border-top: 1px solid #eee; }
 
+        /* تفاعل زر الحذف */
         .remove-item { cursor: pointer; color: #ccc; padding: 5px; transition: 0.3s; }
-        .remove-item:hover { color: #ff4d4d; }
+        .remove-item:hover { color: #ff4d4d; transform: scale(1.2); }
 
         #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--gold); color: #000; padding: 12px 30px; border-radius: 30px; font-weight: bold; opacity: 0; transition: 0.4s; z-index: 10001; pointer-events: none; }
     </style>
@@ -226,6 +255,10 @@
             { id: 2, name: "خاتم الياقوت الملكي", price: 1850, desc: "خاتم كلاسيكي مرصع بالياقوت الأحمر النقي، صُمم بعناية ليعكس الرقي والجمال.", img: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=600" },
             { id: 3, name: "سوار الألماس اللامع", price: 4500, desc: "سوار أنيق مرصع بقطع الألماس الصغيرة، يتميز بتصميم عصري يناسب جميع المناسبات.", img: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=600" },
             { id: 4, name: "أقراط اللؤلؤ الطبيعي", price: 1200, desc: "أقراط متدلية من اللؤلؤ الطبيعي الأبيض، تجسد الأنوثة والنعومة في تصميم واحد.", img: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=600" },
+            { id: 5, name: "طقم كليوباترا الذهبي", price: 7200, desc: "طقم كامل مستوحى من الفخامة التاريخية، يجمع بين دقة التصميم وبريق الذهب عيار 21.", img: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600" },
+            { id: 6, name: "خاتم السوليتير الفريد", price: 2900, desc: "خاتم خطوبة بتصميم السوليتير الكلاسيكي، بقطعة مركزية تخطف الأنظار بلمعانها.", img: "https://images.unsplash.com/photo-1544441893-675973e31985?w=600" },
+            { id: 7, name: "عقد التوباز الأزرق", price: 2400, desc: "سلسلة ناعمة بحجر التوباز الأزرق الذي يرمز للهدوء والتميز.", img: "https://images.unsplash.com/photo-1635767798638-3e25273a8236?w=600" },
+            { id: 8, name: "سوار الذهب المجدول", price: 1600, desc: "سوار يدوي الصنع بتصميم مجدول فريد، مثالي للارتداء اليومي الفاخر.", img: "https://images.unsplash.com/photo-1573408301185-9146fe634ad0?w=600" }
         ];
 
         let cart = [];
