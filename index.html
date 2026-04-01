@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LUXORA | Exclusive Boutique & Jewelry</title>
+    <title>LUXORA | Exclusive Ladies Boutique</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Cairo:wght@300;400;700&display=swap" rel="stylesheet">
     
@@ -17,7 +17,6 @@
             --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
-        /* الإعدادات العامة */
         * { 
             margin: 0; padding: 0; box-sizing: border-box; 
             font-family: 'Cairo', sans-serif;
@@ -31,7 +30,7 @@
             line-height: 1.5;
         }
 
-        /* --- 1. الشاشات التمهيدية (اللودر والدخول) --- */
+        /* --- اللودر --- */
         #loader {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: var(--dark); display: flex; flex-direction: column;
@@ -44,18 +43,7 @@
         }
         @keyframes pulse { 0%, 100% { opacity: 0.3; transform: scale(0.95); } 50% { opacity: 1; transform: scale(1); } }
 
-        #entry-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            display: flex; flex-direction: column; z-index: 9000; background: var(--dark);
-            transition: transform 1s cubic-bezier(0.85, 0, 0.15, 1);
-        }
-        @media (min-width: 768px) { #entry-screen { flex-direction: row; } }
-        .selection-half { flex: 1; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-        .selection-half img { position: absolute; width: 100%; height: 100%; object-fit: cover; opacity: 0.4; transition: 1.5s; }
-        .selection-half:hover img { transform: scale(1.1); opacity: 0.6; }
-        .selection-half h2 { color: white; font-family: 'Cinzel', serif; font-size: 2.2rem; z-index: 10; letter-spacing: 5px; text-shadow: 0 4px 10px rgba(0,0,0,0.5); }
-
-        /* --- 2. الهيدر --- */
+        /* --- الهيدر --- */
         header { 
             position: sticky; top: 0; z-index: 2000;
             background: rgba(10, 10, 10, 0.98); padding: 15px 5%; 
@@ -71,7 +59,7 @@
             display: flex; align-items: center; justify-content: center; font-weight: bold; 
         }
 
-        /* --- 3. المنتجات (2 في الصف مع خاصية التكبير) --- */
+        /* --- شبكة المنتجات (2 في الصف) --- */
         main { 
             display: grid; grid-template-columns: repeat(2, 1fr); 
             gap: 12px; padding: 15px; max-width: 1400px; margin: 0 auto;
@@ -88,31 +76,17 @@
         .img-container { width: 100%; height: 180px; overflow: hidden; margin-bottom: 12px; border-radius: 4px; }
         @media (min-width: 768px) { .img-container { height: 280px; } }
         
-        /* تأثير التكبير المطلبوب */
         .product-card img { 
             width: 100%; height: 100%; object-fit: cover; 
             transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1); 
         }
-        .product-card:hover img { transform: scale(1.12); } /* يكبر عند التمرير */
-        .product-card:active { transform: scale(0.96); } /* ينضغط قليلاً عند اللمس */
+        .product-card:hover img { transform: scale(1.12); }
+        .product-card:active { transform: scale(0.96); }
 
         .product-card h3 { font-size: 0.9rem; margin-bottom: 5px; height: 2.5em; overflow: hidden; font-weight: 700; color: #333; }
         .product-card .price { color: var(--gold); font-weight: 900; font-family: 'Cinzel', serif; font-size: 1.1rem; }
 
-        /* --- 4. الأزرار التفاعلية (X) --- */
-        .close-btn-royal {
-            width: 40px; height: 40px; border: 1px solid var(--gold);
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            color: var(--gold); cursor: pointer; transition: var(--transition);
-            background: rgba(10, 10, 10, 0.05); font-size: 18px;
-        }
-        .close-btn-royal:active { 
-            transform: rotate(180deg) scale(0.8); 
-            background: var(--gold); color: white;
-            box-shadow: 0 0 15px var(--gold);
-        }
-
-        /* --- 5. المودال (تفاصيل المنتج) --- */
+        /* --- المودال --- */
         .modal { 
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background: rgba(0,0,0,0.85); z-index: 5000; justify-content: center; align-items: flex-end; 
@@ -133,7 +107,7 @@
         .modal-body { padding: 25px; flex: 1; overflow-y: auto; text-align: center; }
         .modal-footer { padding: 20px; border-top: 1px solid #eee; background: white; }
 
-        /* --- 6. الحقيبة الجانبية (Sidebar) تشغل 80% --- */
+        /* --- الحقيبة الجانبية --- */
         .sidebar-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.6); z-index: 5999; backdrop-filter: blur(3px);
@@ -141,22 +115,24 @@
         .sidebar { 
             position: fixed; top: 0; left: -100%; width: 85%; max-width: 350px; height: 100%; 
             background: white; z-index: 6000; transition: 0.5s cubic-bezier(0.77, 0, 0.175, 1);
-            display: flex; flex-direction: column; box-shadow: 15px 0 30px rgba(0,0,0,0.3);
+            display: flex; flex-direction: column;
         }
         .sidebar.active { left: 0; }
         .sidebar-header { padding: 25px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; }
-        #cart-items-wrap { flex: 1; overflow-y: auto; padding: 20px; -webkit-overflow-scrolling: touch; }
+        #cart-items-wrap { flex: 1; overflow-y: auto; padding: 20px; }
         .sidebar-footer { padding: 25px; border-top: 1px solid #eee; }
 
-        /* الأزرار الملكية */
+        .close-btn-royal {
+            width: 35px; height: 35px; border: 1px solid var(--gold); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; color: var(--gold);
+        }
+
         .btn-royal { 
             background: var(--dark); color: var(--gold); border: 1px solid var(--gold); 
-            padding: 18px; width: 100%; font-weight: 900; cursor: pointer;
-            letter-spacing: 2px; text-transform: uppercase; transition: 0.3s;
+            padding: 18px; width: 100%; font-weight: 900; cursor: pointer; letter-spacing: 2px;
         }
-        .btn-royal:active { background: var(--gold); color: var(--dark); transform: scale(0.98); }
+        .btn-royal:active { background: var(--gold); color: var(--dark); }
 
-        /* التوسات (Toast) */
         #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--gold); color: #000; padding: 12px 30px; border-radius: 30px; font-weight: bold; opacity: 0; transition: 0.4s; z-index: 10001; pointer-events: none; }
     </style>
 </head>
@@ -164,22 +140,8 @@
 
     <div id="loader"><div class="loader-logo">LUXORA</div></div>
 
-    <div id="entry-screen">
-        <div class="selection-half" onclick="enterStore('men')">
-            <img src="https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=1000">
-            <h2>GENTS</h2>
-        </div>
-        <div class="selection-half" onclick="enterStore('women')">
-            <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=1000">
-            <h2>LADIES</h2>
-        </div>
-    </div>
-
     <header>
-        <div id="back-home" onclick="goHome()" style="display:none; color:var(--gold); cursor:pointer;">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-        </div>
-        <div class="logo-text">LUXORA</div>
+        <div></div> <div class="logo-text">LUXORA</div>
         <div class="cart-icon-wrap" onclick="toggleCart()">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#c5a059" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
             <span id="cart-count">0</span>
@@ -208,7 +170,7 @@
     <div id="cart-overlay" class="sidebar-overlay" onclick="toggleCart()"></div>
     <div id="cart-sidebar" class="sidebar">
         <div class="sidebar-header">
-            <h3 style="font-family:'Cinzel'; color:var(--gold);">HAGUIBA</h3>
+            <h3 style="font-family:'Cinzel'; color:var(--gold);">MY BAG</h3>
             <div class="close-btn-royal" onclick="toggleCart()">✕</div>
         </div>
         <div id="cart-items-wrap"></div>
@@ -224,32 +186,19 @@
     <div id="toast">تمت الإضافة بنجاح</div>
 
     <script>
+        // قاعدة بيانات نسائية فقط
         const db = [
-            { id: 1, type: 'women', name: "عقد الزمرد الملكي", price: 3400, desc: "زمرد كولومبي طبيعي مرصع بذهب 18 قيراط.", img: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600" },
-            { id: 2, type: 'women', name: "خاتم الياقوت الأحمر", price: 2100, desc: "تصميم كلاسيكي يبرز جمال الياقوت الطبيعي.", img: "https://media.istockphoto.com/id/2077222877/fr/photo/bague-bijoux-pierres-pr%C3%A9cieuses.webp?a=1&b=1&s=612x612&w=0&k=20&c=OUIgGMG3OGlm4MnWHh3HnHY7NNypX-WglWqKZcDc5CY=" },
-            { id: 3, type: 'men', name: "ساعة ليمتد جولد", price: 5200, desc: "إصدار محدود بحركة سويسرية وطلاء ذهب نقي.", img: "https://images.unsplash.com/photo-1772949400376-5965cc2256ea?q=80&w=600" },
-            { id: 4, type: 'men', name: "خاتم فضة عيار 925", price: 1200, desc: "شغل يدوي فاخر من الفضة الاسترلينية.", img: "https://fathyibrahim.com/cdn/shop/files/MR00-3S-8-1_1000x.jpg?v=1742217351" },
-            { id: 4, type: 'men', name: "خاتم رجالي أسود", price: 1200, desc: "خاتم رجالي أسود من الستانلس القوي غير قابل للصدأ. آخر موضة للرجال. ", img: "https://ae01.alicdn.com/kf/S3aa8e25b547f4fe8855389786c49d56c9.jpg" },
+            { id: 1, name: "عقد الزمرد الملكي", price: 3400, desc: "زمرد كولومبي طبيعي مرصع بذهب 18 قيراط.", img: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600" },
+            { id: 2, name: "خاتم الياقوت الأحمر", price: 2100, desc: "تصميم كلاسيكي يبرز جمال الياقوت الطبيعي.", img: "https://media.istockphoto.com/id/2077222877/fr/photo/bague-bijoux-pierres-pr%C3%A9cieuses.webp?a=1&b=1&s=612x612&w=0&k=20&c=OUIgGMG3OGlm4MnWHh3HnHY7NNypX-WglWqKZcDc5CY=" },
+            { id: 3, name: "طقم ألماس فيكتوريا", price: 8500, desc: "طقم كامل من الألماس الحر بتصميم فيكتوري ساحر.", img: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600" },
+            { id: 4, name: "سوار الذهب الملتوي", price: 1800, desc: "ذهب عيار 21 بتصميم عصري وأنيق.", img: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=600" }
         ];
 
         let cart = [];
 
-        function enterStore(cat) {
-            const products = db.filter(p => p.type === cat);
-            render(products);
-            document.getElementById('entry-screen').style.transform = 'translateY(-100%)';
-            document.getElementById('back-home').style.display = 'block';
-            window.scrollTo(0,0);
-        }
-
-        function goHome() {
-            document.getElementById('entry-screen').style.transform = 'translateY(0)';
-            document.getElementById('back-home').style.display = 'none';
-        }
-
-        function render(items) {
+        function render() {
             const grid = document.getElementById('products-grid');
-            grid.innerHTML = items.map(p => `
+            grid.innerHTML = db.map(p => `
                 <div class="product-card" onclick="openProduct(${p.id})">
                     <div class="img-container"><img src="${p.img}" loading="lazy"></div>
                     <h3>${p.name}</h3>
@@ -271,9 +220,7 @@
 
         function closeModal() {
             document.getElementById('product-modal').style.display = 'none';
-            if(!document.getElementById('cart-sidebar').classList.contains('active')) {
-                document.body.style.overflow = 'auto';
-            }
+            if(!document.getElementById('cart-sidebar').classList.contains('active')) document.body.style.overflow = 'auto';
         }
 
         function toggleCart() {
@@ -326,17 +273,18 @@
         function checkout() {
             if(cart.length === 0) return alert("الحقيبة فارغة");
             const phone = "212621445495";
-            let text = "*طلب جديد من LUXORA*\n\n";
+            let text = "*طلب نسائي جديد - LUXORA*\n\n";
             cart.forEach((i, n) => text += `${n+1}. ${i.name} - ${i.price} MAD\n`);
             text += `\n*الإجمالي:* ${document.getElementById('total-price').innerText}`;
             window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`);
         }
 
         window.onload = () => {
+            render();
             setTimeout(() => {
                 document.getElementById('loader').style.opacity = '0';
                 setTimeout(() => document.getElementById('loader').style.display = 'none', 800);
-            }, 1200);
+            }, 1000);
         };
     </script>
 </body>
